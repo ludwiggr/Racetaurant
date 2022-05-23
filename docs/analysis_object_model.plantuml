@@ -1,0 +1,95 @@
+@startuml Racetaurant Analysis Object Model
+
+enum "Cuisine" {
+  BALKAN
+  ASIAN
+  ITALIAN
+  GERMAN
+  INDIAN
+  TURKISH
+  GREEK
+  AMERICAN
+  id : int
+}
+
+class "Location" {
+  latitude : double
+  longitude : double
+  address : String
+  address() : String
+  latitude() : double
+  longitude() : double
+}
+
+class "OpeningTimes" {
+  monday : Time
+  tuesday : Time
+  wednesday : Time
+  thursday : Time
+  friday : Time
+  saturday : Time
+  sunday : Time
+  friday() : Time
+  monday() : Time
+  saturday() : Time
+  sunday() : Time
+  thursday() : Time
+  tuesday() : Time
+  wednesday() : Time
+}
+
+enum "PriceCategory" {
+  CHEAP
+  MEDIUM
+  EXPENSIVE
+  value : int
+}
+
+class "RacetaurantApplication"
+
+class "Restaurant" {
+  id : String
+  name : String
+  website : String
+  rating : double
+  images : String[]
+  priceCategory : PriceCategory
+  cuisines : Cuisine[]
+  location : Location
+  layout : RestaurantLayout
+  times : OpeningTimes
+  cuisines() : Cuisine[]
+  id() : String
+  images() : String[]
+  layout() : RestaurantLayout
+  location() : Location
+  name() : String
+  priceCategory() : PriceCategory
+  rating() : double
+  times() : OpeningTimes
+  website() : String
+}
+
+class "RestaurantController"
+
+class "RestaurantLayout"
+
+interface "RestaurantRepository"
+
+class "Time" {
+  from : String
+  to : String
+  closed : boolean
+  closed() : boolean
+  from() : String
+  to() : String
+}
+
+"OpeningTimes" --> "7" "Time" : monday/tuesday/wednesday/thursday/friday/saturday/sunday
+"Restaurant" --> "Location" : location
+"Restaurant" --> "OpeningTimes" : times
+"Restaurant" --> "PriceCategory" : priceCategory
+"Restaurant" --> "RestaurantLayout" : layout
+"Restaurant" --> "*" "Cuisine" : cuisines
+
+@enduml
