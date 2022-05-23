@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "com.github.roroche.plantuml" version '1.0.2'
 }
 
 group = 'de.nullpointerexception'
@@ -19,4 +20,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+classDiagram {
+    packageName = "de.nullpointerexception.racetaurant"
+    outputFile = project.file('../docs/analysis_object_model.plantuml')
 }
