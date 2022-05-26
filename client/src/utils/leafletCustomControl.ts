@@ -2,6 +2,7 @@ import { createControlHook, createElementHook } from '@react-leaflet/core';
 import { Control, ControlOptions, DomEvent, DomUtil } from 'leaflet';
 import { forwardRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import useForceUpdate from './useForceUpdate';
 
 // A custom control for adding React elements to Leaflet map
 
@@ -15,15 +16,6 @@ const CustomControl = Control.extend({
         return div;
     }
 });
-
-/**
- * @returns A function that can be called to force an update
- */
-const useForceUpdate = (): VoidFunction => {
-    const [, updateState] = useState(null);
-    return () => updateState(null);
-}
-
 
 const createLeafletControl = <E extends Control, O extends ControlOptions>(element: any) => {
     const Component = (props: any, _ref: any) => {
