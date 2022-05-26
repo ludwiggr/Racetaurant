@@ -8,6 +8,7 @@ import Restaurant from '../model/restaurant';
 import styles from '../styles/restaurantMap.module.css';
 import { ReactControl } from '../utils/leafletCustomControl';
 import '../utils/leafletDefaultIconFixer';
+import { shallowEqual } from 'fast-equals';
 
 /**
  * A RestaurantMap displays the locations of the passed restaurants on a map
@@ -63,7 +64,7 @@ export class RestaurantMap extends React.Component<{
     }
 
     componentDidUpdate(prevProps: any) {
-        if (this.props.padding !== prevProps.padding)
+        if (!shallowEqual(this.props.padding, prevProps.padding))
             this.resetPosition();
     }
 
