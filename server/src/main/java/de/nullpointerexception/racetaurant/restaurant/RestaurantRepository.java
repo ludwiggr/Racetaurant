@@ -12,17 +12,58 @@ public class RestaurantRepository{
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public List<Restaurant> findFiltered(Integer start, Integer limit, PriceCategory priceCategory, Double latitude, Double longitude, Double radius, Cuisine[] cuisines, Double ratingMin, Double ratingMax, String timeStart, String timeStop, Integer persons, Order order, boolean asc){
-		String query = "SELECT * FROM restaurants";
-		// TODO: Adjust query to respect filters
-		List<Restaurant> rawResults = entityManager.createNativeQuery(query).getResultList();
-		// TODO: Manually filter results to respect filters that weren't implemented in the sql query
-		return rawResults;
+	public List<Restaurant> findFiltered(int start, int limit, PriceCategory priceCategory, double latitude, double longitude, double radius, Cuisine[] cuisines, Double ratingMin, Double ratingMax, String timeStart, String timeStop, int persons, String order, boolean direction){
+		// 1.) Create sql query
+		String query = "SELECT * FROM restaurants WHERE ";
+		if(priceCategory != null){
+			query += String.format("price=%d AND ", priceCategory.getValue());
+		}
+		query += String.format("POW( ( 69.1 * ( location.longitude - %f ) * cos( %f / 57.3 ) ) , 2 ) + POW( ( 69.1 * ( location.latitude - %f ) ) , 2 )) < ( %f * %f ) AND ", longitude, latitude, latitude, radius, radius);
+		if(ratingMin != null){
+			query += String.format("rating >= %f", ratingMin);
+		}
+		if(ratingMax != null){
+			if(ratingMin != null){
+				query += " AND ";
+			}
+			query += String.format("rating <= %f", ratingMax);
+		}
+		query += String.format("ORDER BY %s %s LIMIT %d OFFSET %d", order, direction ? "ASC" : "DSC", limit, start);
+
+		// 2.) Execute sql query
+		List<Restaurant> restaurants = entityManager.createQuery(query).getResultList();
+
+		// 3.) Filter cuisine types (not done using sql)
+		if(cuisines != null){
+			restaurants = filterRestaurantsByCuisines(restaurants, cuisines);
+		}
+
+		// TODO: Filter by persons
+		// TODO: Filter by startTime and stopTime
+		return restaurants;
+	}
+
+	private List<Restaurant> filterRestaurantsByCuisines(List<Restaurant> restaurants, Cuisine[] requiredCuisines){
+		return restaurants.stream().filter(r -> {
+			for(Cuisine requiredCuisine : requiredCuisines){
+				boolean containsRequiredCuisine = false;
+				for(Cuisine restaurantCuisine : r.getCuisines()){
+					if(restaurantCuisine == requiredCuisine){
+						containsRequiredCuisine = true;
+						break;
+					}
+				}
+				if(!containsRequiredCuisine){
+					return false;
+				}
+			}
+			return true;
+		}).toList();
 	}
 
 	public Optional<Restaurant> findById(String id){
 		String query = String.format("SELECT * FROM restaurants WHERE id=%s;", id);
-		List<Restaurant> results = entityManager.createNativeQuery(query).getResultList();
+		List<Restaurant> results = entityManager.createQuery(query).getResultList();
 		if(results.isEmpty()){
 			return Optional.empty();
 		}else{
