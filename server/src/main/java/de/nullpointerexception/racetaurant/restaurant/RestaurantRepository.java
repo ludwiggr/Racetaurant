@@ -31,7 +31,7 @@ public class RestaurantRepository{
 		query += String.format("ORDER BY %s %s LIMIT %d OFFSET %d", order, direction ? "ASC" : "DSC", limit, start);
 
 		// 2.) Execute sql query
-		List<Restaurant> restaurants = entityManager.createQuery(query).getResultList();
+		List<Restaurant> restaurants = entityManager.createQuery(query, Restaurant.class).getResultList();
 
 		// 3.) Filter cuisine types (not done using sql)
 		if(cuisines != null){
@@ -63,7 +63,7 @@ public class RestaurantRepository{
 
 	public Optional<Restaurant> findById(String id){
 		String query = String.format("SELECT * FROM restaurants WHERE id=%s;", id);
-		List<Restaurant> results = entityManager.createQuery(query).getResultList();
+		List<Restaurant> results = entityManager.createQuery(query, Restaurant.class).getResultList();
 		if(results.isEmpty()){
 			return Optional.empty();
 		}else{
