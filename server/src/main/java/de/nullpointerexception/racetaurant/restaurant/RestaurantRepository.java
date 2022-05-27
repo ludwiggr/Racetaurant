@@ -1,21 +1,33 @@
 package de.nullpointerexception.racetaurant.restaurant;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
-public interface RestaurantRepository extends JpaRepository<Restaurant, String> {
+@Repository
+public class RestaurantRepository{
+	@PersistenceContext
+	private EntityManager entityManager;
 
-	@Query("SELECT * FROM restaurants WHERE " +
-			"priceCategory = :price AND " +
-			"rating >= :ratingMin AND " +
-			"rating <= :ratingMax AND " +
-			"POW( ( 69.1 * ( location.longitude - :longitude ) * cos( :latitude / 57.3 ) ) , 2 ) + POW( ( 69.1 * ( location.latitude - :latitude ) ) , 2 )) < ( :radius * :radius ) AND" +
-			"ORDER BY :order :direction " +
-			"LIMIT :limit OFFSET :start"
-	)
-	List<Restaurant> findFiltered(@Param("start") int start, @Param("limit") int limit, @Param("price") int price,  @Param("latitude") double latitude, @Param("longitude") double longitude, @Param("radius") double radius, @Param("ratingMin") double ratingMin, @Param("ratingMax") double ratingMax, @Param("order") String order, @Param("direction") String direction);
+	public List<Restaurant> findFiltered(Integer start, Integer limit, PriceCategory priceCategory, Double latitude, Double longitude, Double radius, Cuisine[] cuisines, Double ratingMin, Double ratingMax, String timeStart, String timeStop, Integer persons, Order order, boolean asc){
+		String query = "SELECT * FROM restaurants";
+		// TODO: Adjust query to respect filters
+		List<Restaurant> rawResults = entityManager.createNativeQuery(query).getResultList();
+		// TODO: Manually filter results to respect filters that weren't implemented in the sql query
+		return rawResults;
+	}
+
+	public Optional<Restaurant> findById(String id){
+		String query = String.format("SELECT * FROM restaurants WHERE id=%s;", id);
+		List<Restaurant> results = entityManager.createNativeQuery(query).getResultList();
+		if(results.isEmpty()){
+			return Optional.empty();
+		}else{
+			return Optional.of(results.get(0));
+		}
+	}
 
 }
