@@ -8,4 +8,4 @@ const c3 = "const3";
 
 export default Cuisine;
 
-export {c1, c2, c3};
+export { c1, c2, c3 };
