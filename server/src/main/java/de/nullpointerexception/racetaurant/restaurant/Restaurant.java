@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity @Table(name = "restaurants") public class Restaurant {
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE) private String id;
+	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE) private Long id;
 	private String name;
 	private String website;
 	private double rating;
@@ -35,7 +35,7 @@ import java.util.List;
 		this.times = times;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
