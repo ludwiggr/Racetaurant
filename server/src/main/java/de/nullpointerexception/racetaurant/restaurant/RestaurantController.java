@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController public class RestaurantController {
 	private final RestaurantService service;
@@ -92,7 +93,7 @@ import java.util.List;
 				ratingMin, ratingMax, timeStart, timeStop, persons, order, asc);
 	}
 
-	@GetMapping("/restaurants/{id}") Restaurant one(@PathVariable Long id) {
+	@GetMapping("/restaurants/{id}") Restaurant one(@PathVariable UUID id) {
 		return service.getRestaurantById(id).orElseThrow(() -> new RestaurantNotFoundException(id.toString()));
 	}
 

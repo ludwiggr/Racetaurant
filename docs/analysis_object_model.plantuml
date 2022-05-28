@@ -55,7 +55,7 @@ class "RacetaurantApplication" {
 }
 
 class "Restaurant" {
-  id : Long
+  id : UUID
   name : String
   website : String
   rating : double
@@ -88,7 +88,7 @@ interface "RestaurantRepository"
 class "RestaurantService" {
   restaurantRepository : RestaurantRepository
   em : EntityManager
-  getRestaurantById(Long) : Optional<Restaurant>
+  getRestaurantById(UUID) : Optional<Restaurant>
   getRestaurantsWithFilter(Integer, Integer, PriceCategory, Double, Double, Double, CuisineType[], Double, Double, String, String, Integer, String, Boolean) : List<Restaurant>
 }
 

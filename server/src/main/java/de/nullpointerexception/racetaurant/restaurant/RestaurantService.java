@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service public class RestaurantService {
 	private final RestaurantRepository restaurantRepository;
@@ -142,7 +143,7 @@ import java.util.Optional;
 		}).toList();
 	}
 
-	public Optional<Restaurant> getRestaurantById(Long id) {
+	public Optional<Restaurant> getRestaurantById(UUID id) {
 		return restaurantRepository.findById(id);
 	}
 }

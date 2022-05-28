@@ -2,9 +2,13 @@ package de.nullpointerexception.racetaurant.restaurant;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity @Table(name = "restaurants") public class Restaurant {
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE) private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id", insertable = false, updatable = false, nullable = false)
+	private UUID id;
 	private String name;
 	private String website;
 	private double rating;
@@ -35,7 +39,7 @@ import java.util.List;
 		this.times = times;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
