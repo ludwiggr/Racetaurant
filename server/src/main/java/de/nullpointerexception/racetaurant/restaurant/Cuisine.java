@@ -1,16 +1,21 @@
 package de.nullpointerexception.racetaurant.restaurant;
 
-public enum Cuisine {
-	BALKAN("balkan"), ASIAN("asian"), ITALIAN("italian"), GERMAN("german"), INDIAN("indian"), TURKISH("turkish"),
-	GREEK("greek"), AMERICAN("american");
+import javax.persistence.*;
 
-	private final String id;
+@Entity
+@Table(name = "cuisines")
+public class Cuisine {
+	@Id
+	@GeneratedValue
+	private Long id;
 
-	private Cuisine(String id) {
-		this.id = id;
+	private CuisineType cuisineType;
+
+	public Long getId() {
+		return id;
 	}
 
-	public String getId() {
-		return id;
+	public CuisineType getCuisineType() {
+		return cuisineType;
 	}
 }

@@ -65,11 +65,11 @@ public class RestaurantController {
 		if (cuisines != null && !RestaurantValidator.validateCuisines(cuisines)){
 			throw new InvalidQueryParameterException("One or more specified cuisines are incorrect");
 		}
-		Cuisine[] cuisineArray = null;
+		CuisineType[] cuisineArray = null;
 		if (cuisines != null) {
-			cuisineArray = new Cuisine[cuisines.length];
+			cuisineArray = new CuisineType[cuisines.length];
 			for (int i = 0; i < cuisines.length; i++) {
-				cuisineArray[i] = Cuisine.valueOf(cuisines[i]);
+				cuisineArray[i] = CuisineType.valueOf(cuisines[i]);
 			}
 		}
 
@@ -168,7 +168,7 @@ public class RestaurantController {
 			}
 			for (String cuisine : cuisines) {
 				try {
-					Cuisine.valueOf(cuisine);
+					CuisineType.valueOf(cuisine);
 				}
 				catch (IllegalArgumentException e) {
 					return false;

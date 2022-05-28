@@ -1,11 +1,21 @@
 package de.nullpointerexception.racetaurant.restaurant;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "restaurantsLocation")
 public class Location {
+	@Id
+	@GeneratedValue
+	private Long id;
 	private double latitude;
 	private double longitude;
 	private String address;
 
-	Location(){
+	protected Location(){
 
 	}
 
@@ -37,5 +47,9 @@ public class Location {
 
 	private void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

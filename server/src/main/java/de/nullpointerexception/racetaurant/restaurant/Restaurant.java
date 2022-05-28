@@ -1,86 +1,53 @@
 package de.nullpointerexception.racetaurant.restaurant;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-@Entity public class Restaurant {
+@Entity
+@Table(name = "restaurants")
+public class Restaurant {
 	@Id
 	@GeneratedValue
-	private String id;
+	private Long id;
 	private String name;
 	private String website;
 	private double rating;
-	private String[] images;
+	@OneToMany(mappedBy = "restaurant")
+	private List<RestaurantImage> restaurantImages;
 	private PriceCategory priceCategory;
-	private Cuisine[] cuisines;
+	@ManyToMany
+	@JoinTable(
+			name = "restaurantCuisines",
+			joinColumns = @JoinColumn(name = "restaurantId", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "cuisineId", referencedColumnName = "id")
+	)
+	private List<Cuisine> cuisines;
+	@OneToOne(optional = false)
+	@JoinColumn(name = "locationId", referencedColumnName = "id")
 	private Location location;
+	// Restaurant layouts are optional because we haven't implemented them yet
+	@OneToOne(optional = true)
+	@JoinColumn(name = "layoutId", referencedColumnName = "id")
 	private RestaurantLayout layout;
+	@OneToOne(optional = false)
+	@JoinColumn(name = "openingTimesId", referencedColumnName = "id")
 	private OpeningTimes times;
 
-	Restaurant(){
+	protected Restaurant(){
 
 	}
 
-	public Restaurant(String name, String website, double rating, String[] images, PriceCategory priceCategory,
-			Cuisine[] cuisines, Location location, RestaurantLayout layout, OpeningTimes times) {
-		this.name = name;
-		this.website = website;
-		this.rating = rating;
-		this.images = images;
-		this.priceCategory = priceCategory;
-		this.cuisines = cuisines;
-		this.location = location;
-		this.layout = layout;
-		this.times = times;
-	}
-
-	@Override public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(cuisines);
-		result = prime * result + Arrays.hashCode(images);
-		result = prime * result + Objects.hash(id, layout, location, name, priceCategory, rating, times, website);
-		return result;
-	}
-
-	@Override public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Restaurant other = (Restaurant) obj;
-		return Arrays.equals(cuisines, other.cuisines) && Objects.equals(id, other.id) && Arrays.equals(images,
-				other.images) && Objects.equals(layout, other.layout) && Objects.equals(location,
-				other.location) && Objects.equals(name,
-				other.name) && priceCategory == other.priceCategory && Double.doubleToLongBits(
-				rating) == Double.doubleToLongBits(other.rating) && Objects.equals(times,
-				other.times) && Objects.equals(website, other.website);
-	}
-
-	@Override public String toString() {
-		return "Restaurant [id=" + id + ", name=" + name + ", website=" + website + ", rating=" + rating + ", images=" + Arrays.toString(
-				images) + ", priceCategory=" + priceCategory + ", cuisines=" + Arrays.toString(
-				cuisines) + ", location=" + location + ", layout=" + layout + ", times=" + times + "]";
-	}
-
-	public String getId() {
+	public Long getId() {
 		return id;
-	}
-
-	private void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	private void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -88,7 +55,7 @@ import java.util.Objects;
 		return website;
 	}
 
-	private void setWebsite(String website) {
+	public void setWebsite(String website) {
 		this.website = website;
 	}
 
@@ -96,31 +63,31 @@ import java.util.Objects;
 		return rating;
 	}
 
-	private void setRating(double rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 
-	public String[] getImages() {
-		return images;
+	public List<RestaurantImage> getRestaurantImages() {
+		return restaurantImages;
 	}
 
-	private void setImages(String[] images) {
-		this.images = images;
+	public void setRestaurantImages(List<RestaurantImage> restaurantImages) {
+		this.restaurantImages = restaurantImages;
 	}
 
 	public PriceCategory getPriceCategory() {
 		return priceCategory;
 	}
 
-	private void setPriceCategory(PriceCategory priceCategory) {
+	public void setPriceCategory(PriceCategory priceCategory) {
 		this.priceCategory = priceCategory;
 	}
 
-	public Cuisine[] getCuisines() {
+	public List<Cuisine> getCuisines() {
 		return cuisines;
 	}
 
-	private void setCuisines(Cuisine[] cuisines) {
+	public void setCuisines(List<Cuisine> cuisines) {
 		this.cuisines = cuisines;
 	}
 
@@ -128,7 +95,7 @@ import java.util.Objects;
 		return location;
 	}
 
-	private void setLocation(Location location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 
@@ -136,7 +103,7 @@ import java.util.Objects;
 		return layout;
 	}
 
-	private void setLayout(RestaurantLayout layout) {
+	public void setLayout(RestaurantLayout layout) {
 		this.layout = layout;
 	}
 
@@ -144,7 +111,7 @@ import java.util.Objects;
 		return times;
 	}
 
-	private void setTimes(OpeningTimes times) {
+	public void setTimes(OpeningTimes times) {
 		this.times = times;
 	}
 }

@@ -12,7 +12,7 @@ public class RestaurantRepository{
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public List<Restaurant> findFiltered(int start, int limit, PriceCategory priceCategory, double latitude, double longitude, double radius, Cuisine[] cuisines, Double ratingMin, Double ratingMax, String timeStart, String timeStop, int persons, String order, boolean direction){
+	public List<Restaurant> findFiltered(int start, int limit, PriceCategory priceCategory, double latitude, double longitude, double radius, CuisineType[] cuisines, Double ratingMin, Double ratingMax, String timeStart, String timeStop, int persons, String order, boolean direction){
 		// 1.) Create sql query
 		String query = "SELECT * FROM restaurants WHERE ";
 		if(priceCategory != null){
@@ -43,12 +43,12 @@ public class RestaurantRepository{
 		return restaurants;
 	}
 
-	private List<Restaurant> filterRestaurantsByCuisines(List<Restaurant> restaurants, Cuisine[] requiredCuisines){
+	private List<Restaurant> filterRestaurantsByCuisines(List<Restaurant> restaurants, CuisineType[] requiredCuisines){
 		return restaurants.stream().filter(r -> {
-			for(Cuisine requiredCuisine : requiredCuisines){
+			for(CuisineType requiredCuisine : requiredCuisines){
 				boolean containsRequiredCuisine = false;
 				for(Cuisine restaurantCuisine : r.getCuisines()){
-					if(restaurantCuisine == requiredCuisine){
+					if(restaurantCuisine.getCuisineType() == requiredCuisine){
 						containsRequiredCuisine = true;
 						break;
 					}
