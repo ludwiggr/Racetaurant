@@ -33,12 +33,16 @@ import java.util.Optional;
 		boolean cuisineFilter = requiredCuisines != null;
 		boolean ratingMinFilter = ratingMin != null;
 		boolean ratingMaxFilter = ratingMax != null;
-
-		// TODO: filter by opening times
 		boolean openingTimesFilter = timeStart != null && timeStop != null;
-
-		// TODO: filter by persons
 		boolean personsFilter = persons != null;
+
+		if (openingTimesFilter) {
+			// TODO: Implement opening times filter
+		}
+
+		if (personsFilter) {
+			// TODO: Implement persons filter
+		}
 
 		// Filter by price category
 		if (priceCategoryFilter) {

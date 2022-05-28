@@ -4,36 +4,35 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Entity @Table(name = "restaurantsOpeningTimes") public class OpeningTimes {
 	@Id @GeneratedValue private Long id;
 
-	private LocalDate mondayFrom;
-	private LocalDate mondayTo;
+	private String mondayFrom;
+	private String mondayTo;
 
-	private LocalDate tuesdayFrom;
-	private LocalDate tuesDayTo;
+	private String tuesdayFrom;
+	private String tuesDayTo;
 
-	private LocalDate wednesdayFrom;
-	private LocalDate wednesdayTo;
+	private String wednesdayFrom;
+	private String wednesdayTo;
 
-	private LocalDate thursdayFrom;
-	private LocalDate thursdayTo;
+	private String thursdayFrom;
+	private String thursdayTo;
 
-	private LocalDate fridayFrom;
-	private LocalDate fridayTo;
+	private String fridayFrom;
+	private String fridayTo;
 
-	private LocalDate saturdayFrom;
-	private LocalDate saturdayTo;
+	private String saturdayFrom;
+	private String saturdayTo;
 
 	public OpeningTimes() {
 
 	}
 
-	public OpeningTimes(LocalDate mondayFrom, LocalDate mondayTo, LocalDate tuesdayFrom, LocalDate tuesDayTo,
-			LocalDate wednesdayFrom, LocalDate wednesdayTo, LocalDate thursdayFrom, LocalDate thursdayTo,
-			LocalDate fridayFrom, LocalDate fridayTo, LocalDate saturdayFrom, LocalDate saturdayTo) {
+	public OpeningTimes(String mondayFrom, String mondayTo, String tuesdayFrom, String tuesDayTo, String wednesdayFrom,
+			String wednesdayTo, String thursdayFrom, String thursdayTo, String fridayFrom, String fridayTo,
+			String saturdayFrom, String saturdayTo) {
 		this.mondayFrom = mondayFrom;
 		this.mondayTo = mondayTo;
 		this.tuesdayFrom = tuesdayFrom;
@@ -52,99 +51,99 @@ import java.time.LocalDate;
 		return id;
 	}
 
-	public LocalDate getMondayFrom() {
+	public String getMondayFrom() {
 		return mondayFrom;
 	}
 
-	public void setMondayFrom(LocalDate mondayFrom) {
+	public void setMondayFrom(String mondayFrom) {
 		this.mondayFrom = mondayFrom;
 	}
 
-	public LocalDate getMondayTo() {
+	public String getMondayTo() {
 		return mondayTo;
 	}
 
-	public void setMondayTo(LocalDate mondayTo) {
+	public void setMondayTo(String mondayTo) {
 		this.mondayTo = mondayTo;
 	}
 
-	public LocalDate getTuesdayFrom() {
+	public String getTuesdayFrom() {
 		return tuesdayFrom;
 	}
 
-	public void setTuesdayFrom(LocalDate tuesdayFrom) {
+	public void setTuesdayFrom(String tuesdayFrom) {
 		this.tuesdayFrom = tuesdayFrom;
 	}
 
-	public LocalDate getTuesDayTo() {
+	public String getTuesDayTo() {
 		return tuesDayTo;
 	}
 
-	public void setTuesDayTo(LocalDate tuesDayTo) {
+	public void setTuesDayTo(String tuesDayTo) {
 		this.tuesDayTo = tuesDayTo;
 	}
 
-	public LocalDate getWednesdayFrom() {
+	public String getWednesdayFrom() {
 		return wednesdayFrom;
 	}
 
-	public void setWednesdayFrom(LocalDate wednesdayFrom) {
+	public void setWednesdayFrom(String wednesdayFrom) {
 		this.wednesdayFrom = wednesdayFrom;
 	}
 
-	public LocalDate getWednesdayTo() {
+	public String getWednesdayTo() {
 		return wednesdayTo;
 	}
 
-	public void setWednesdayTo(LocalDate wednesdayTo) {
+	public void setWednesdayTo(String wednesdayTo) {
 		this.wednesdayTo = wednesdayTo;
 	}
 
-	public LocalDate getThursdayFrom() {
+	public String getThursdayFrom() {
 		return thursdayFrom;
 	}
 
-	public void setThursdayFrom(LocalDate thursdayFrom) {
+	public void setThursdayFrom(String thursdayFrom) {
 		this.thursdayFrom = thursdayFrom;
 	}
 
-	public LocalDate getThursdayTo() {
+	public String getThursdayTo() {
 		return thursdayTo;
 	}
 
-	public void setThursdayTo(LocalDate thursdayTo) {
+	public void setThursdayTo(String thursdayTo) {
 		this.thursdayTo = thursdayTo;
 	}
 
-	public LocalDate getFridayFrom() {
+	public String getFridayFrom() {
 		return fridayFrom;
 	}
 
-	public void setFridayFrom(LocalDate fridayFrom) {
+	public void setFridayFrom(String fridayFrom) {
 		this.fridayFrom = fridayFrom;
 	}
 
-	public LocalDate getFridayTo() {
+	public String getFridayTo() {
 		return fridayTo;
 	}
 
-	public void setFridayTo(LocalDate fridayTo) {
+	public void setFridayTo(String fridayTo) {
 		this.fridayTo = fridayTo;
 	}
 
-	public LocalDate getSaturdayFrom() {
+	public String getSaturdayFrom() {
 		return saturdayFrom;
 	}
 
-	public void setSaturdayFrom(LocalDate saturdayFrom) {
+	public void setSaturdayFrom(String saturdayFrom) {
 		this.saturdayFrom = saturdayFrom;
 	}
 
-	public LocalDate getSaturdayTo() {
+	public String getSaturdayTo() {
 		return saturdayTo;
 	}
 
-	public void setSaturdayTo(LocalDate saturdayTo) {
+	public void setSaturdayTo(String saturdayTo) {
 		this.saturdayTo = saturdayTo;
 	}
 }
