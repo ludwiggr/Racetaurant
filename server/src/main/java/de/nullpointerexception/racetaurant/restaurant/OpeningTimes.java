@@ -6,12 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "restaurantsOpeningTimes")
-public class OpeningTimes {
-	@Id
-	@GeneratedValue
-	private Long id;
+@Entity @Table(name = "restaurantsOpeningTimes") public class OpeningTimes {
+	@Id @GeneratedValue private Long id;
 
 	private LocalDate mondayFrom;
 	private LocalDate mondayTo;
@@ -31,7 +27,7 @@ public class OpeningTimes {
 	private LocalDate saturdayFrom;
 	private LocalDate saturdayTo;
 
-	protected OpeningTimes(){
+	public OpeningTimes() {
 
 	}
 

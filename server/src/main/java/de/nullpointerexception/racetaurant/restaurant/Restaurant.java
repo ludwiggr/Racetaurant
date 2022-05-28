@@ -1,42 +1,38 @@
 package de.nullpointerexception.racetaurant.restaurant;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-@Entity
-@Table(name = "restaurants")
-public class Restaurant {
-	@Id
-	@GeneratedValue
-	private Long id;
+@Entity @Table(name = "restaurants") public class Restaurant {
+	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE) private Long id;
 	private String name;
 	private String website;
 	private double rating;
-	@OneToMany(mappedBy = "restaurant")
-	private List<RestaurantImage> restaurantImages;
+	@OneToMany(mappedBy = "restaurant") private List<RestaurantImage> restaurantImages;
 	private PriceCategory priceCategory;
-	@ManyToMany
-	@JoinTable(
-			name = "restaurantCuisines",
-			joinColumns = @JoinColumn(name = "restaurantId", referencedColumnName = "id"),
-			inverseJoinColumns = @JoinColumn(name = "cuisineId", referencedColumnName = "id")
-	)
-	private List<Cuisine> cuisines;
-	@OneToOne(optional = false)
-	@JoinColumn(name = "locationId", referencedColumnName = "id")
-	private Location location;
+	@ManyToMany(cascade = { CascadeType.MERGE,
+			CascadeType.PERSIST }) @JoinTable(name = "restaurantCuisines", joinColumns = @JoinColumn(name = "restaurantId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "cuisineId", referencedColumnName = "id")) private List<Cuisine> cuisines;
+	@OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "locationId", referencedColumnName = "id") private Location location;
 	// Restaurant layouts are optional because we haven't implemented them yet
-	@OneToOne(optional = true)
-	@JoinColumn(name = "layoutId", referencedColumnName = "id")
-	private RestaurantLayout layout;
-	@OneToOne(optional = false)
-	@JoinColumn(name = "openingTimesId", referencedColumnName = "id")
-	private OpeningTimes times;
+	@OneToOne(optional = true, cascade = CascadeType.ALL) @JoinColumn(name = "layoutId", referencedColumnName = "id") private RestaurantLayout layout;
+	@OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "openingTimesId", referencedColumnName = "id") private OpeningTimes times;
 
-	protected Restaurant(){
+	protected Restaurant() {
 
+	}
+
+	public Restaurant(String name, String website, double rating, List<RestaurantImage> restaurantImages,
+			PriceCategory priceCategory, List<Cuisine> cuisines, Location location, RestaurantLayout layout,
+			OpeningTimes times) {
+		this.name = name;
+		this.website = website;
+		this.rating = rating;
+		this.restaurantImages = restaurantImages;
+		this.priceCategory = priceCategory;
+		this.cuisines = cuisines;
+		this.location = location;
+		this.layout = layout;
+		this.times = times;
 	}
 
 	public Long getId() {
