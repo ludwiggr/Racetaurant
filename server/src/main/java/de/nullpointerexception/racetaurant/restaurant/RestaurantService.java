@@ -21,7 +21,7 @@ import java.util.Optional;
 	}
 
 	public List<Restaurant> getRestaurantsWithFilter(Integer start, Integer limit, PriceCategory priceCategory,
-			Double latitude, Double longitude, Double radius, CuisineType[] cuisines, Double ratingMin,
+			Double latitude, Double longitude, Double radius, CuisineType[] requiredCuisines, Double ratingMin,
 			Double ratingMax, String timeStart, String timeStop, Integer persons, String order, Boolean asc) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Restaurant> cq = cb.createQuery(Restaurant.class);
@@ -30,22 +30,19 @@ import java.util.Optional;
 
 		boolean priceCategoryFilter = priceCategory != null;
 		boolean locationFilter = latitude != null && longitude != null && radius != null;
-		boolean cuisineFilter = cuisines != null;
+		boolean cuisineFilter = requiredCuisines != null;
 		boolean ratingMinFilter = ratingMin != null;
 		boolean ratingMaxFilter = ratingMax != null;
+
+		// TODO: filter by opening times
 		boolean openingTimesFilter = timeStart != null && timeStop != null;
+
+		// TODO: filter by persons
 		boolean personsFilter = persons != null;
 
 		// Filter by price category
 		if (priceCategoryFilter) {
-			cq.where(cb.equal(root.get("priceCategory"), cb.parameter(PriceCategory.class, "priceCategory")));
-		}
-
-		// Filter by cuisines
-		if (cuisineFilter) {
-			for (CuisineType cuisineType : cuisines) {
-				cq.where(cb.isMember(cuisineType.getId(), root.get("cuisines").get("cuisineType")));
-			}
+			cq.where(cb.equal(root.get("priceCategory"), priceCategory));
 		}
 
 		// Filter by minimum rating
@@ -113,7 +110,32 @@ import java.util.Optional;
 		limit = limit == null ? 50 : limit;
 		createdQuery.setMaxResults(limit);
 
-		return createdQuery.getResultList();
+		List<Restaurant> results = createdQuery.getResultList();
+
+		// TODO: Filter by cuisines using SQL (currently done using streams)
+		if (cuisineFilter) {
+			return filterRestaurantsByCuisines(results, requiredCuisines);
+		} else {
+			return results;
+		}
+	}
+
+	private List<Restaurant> filterRestaurantsByCuisines(List<Restaurant> restaurants, CuisineType[] requiredCuisines) {
+		return restaurants.stream().filter(r -> {
+			for (CuisineType requiredCuisine : requiredCuisines) {
+				boolean containsRequiredCuisine = false;
+				for (Cuisine restaurantCuisine : r.getCuisines()) {
+					if (restaurantCuisine.getCuisineType() == requiredCuisine) {
+						containsRequiredCuisine = true;
+						break;
+					}
+				}
+				if (!containsRequiredCuisine) {
+					return false;
+				}
+			}
+			return true;
+		}).toList();
 	}
 
 	public Optional<Restaurant> getRestaurantById(Long id) {
