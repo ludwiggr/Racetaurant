@@ -1,207 +1,138 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.persistence.*;
 
 @Entity @Table(name = "restaurantsOpeningTimes") public class OpeningTimes {
 	@Id @GeneratedValue private Long id;
 	private static final String CLOSED = "closed";
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'mondayFrom'.") private String mondayFrom = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "MONDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "MONDAY_TO")), }) @Embedded private OpeningTime monday;
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'mondayTo'.") private String mondayTo = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "TUESDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "TUESDAY_TO")), }) @Embedded private OpeningTime tuesday;
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'tuesdayFrom'.") private String tuesdayFrom = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "WEDNESDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "WEDNESDAY_TO")), }) @Embedded private OpeningTime wednesday;
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'tuesdayTo'.") private String tuesDayTo = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'wednesdayFrom'.") private String wednesdayFrom = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'wednesdayTo'.") private String wednesdayTo = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'thursdayFrom'.") private String thursdayFrom = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'thursdayTo'.") private String thursdayTo = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "THURSDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "THURSDAY_TO")), }) @Embedded private OpeningTime thursday;
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'fridayFrom'.") private String fridayFrom = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'fridayTo'.") private String fridayTo = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "FRIDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "FRIDAY_TO")), }) @Embedded private OpeningTime friday;
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'saturdayFrom'.") private String saturdayFrom = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'saturdayTo'.") private String saturdayTo = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "SATURDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "SATURDAY_TO")), }) @Embedded private OpeningTime saturday;
 
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'sundayFrom'.") private String sundayFrom = CLOSED;
-	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'sundayTo'.") private String sundayTo = CLOSED;
+	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "SUNDAY_FROM")),
+			@AttributeOverride(name = "to", column = @Column(name = "SUNDAY_TO")), }) @Embedded private OpeningTime sunday;
 
 	public OpeningTimes() {
-
+		setMonday(null);
+		setTuesday(null);
+		setWednesday(null);
+		setThursday(null);
+		setFriday(null);
+		setSaturday(null);
+		setSunday(null);
 	}
 
-	public OpeningTimes(String mondayFrom, String mondayTo, String tuesdayFrom, String tuesDayTo, String wednesdayFrom,
-			String wednesdayTo, String thursdayFrom, String thursdayTo, String fridayFrom, String fridayTo,
-			String saturdayFrom, String saturdayTo, String sundayFrom, String sundayTo) {
-		setMondayFrom(mondayFrom);
-		setMondayTo(mondayTo);
-
-		setTuesdayFrom(tuesdayFrom);
-		setTuesDayTo(tuesDayTo);
-
-		setWednesdayFrom(wednesdayFrom);
-		setWednesdayTo(wednesdayTo);
-
-		setThursdayFrom(thursdayFrom);
-		setThursdayTo(thursdayTo);
-
-		setFridayFrom(fridayFrom);
-		setFridayTo(fridayTo);
-
-		setSaturdayFrom(saturdayFrom);
-		setSaturdayTo(saturdayTo);
-
-		setSundayFrom(sundayFrom);
-		setSundayTo(sundayTo);
+	public OpeningTimes(OpeningTime monday, OpeningTime tuesday, OpeningTime wednesday, OpeningTime thursday,
+			OpeningTime friday, OpeningTime saturday, OpeningTime sunday) {
+		setMonday(monday);
+		setTuesday(tuesday);
+		setWednesday(wednesday);
+		setThursday(thursday);
+		setFriday(friday);
+		setSaturday(saturday);
+		setSunday(sunday);
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public String getMondayFrom() {
-		return mondayFrom;
+	public OpeningTime getMonday() {
+		return monday;
 	}
 
-	public void setMondayFrom(String mondayFrom) {
-		if (mondayFrom == null)
-			mondayFrom = CLOSED;
-		this.mondayFrom = mondayFrom;
+	public void setMonday(OpeningTime monday) {
+		if (monday == null) {
+			this.monday = new OpeningTime();
+		} else {
+			this.monday = monday;
+		}
 	}
 
-	public String getMondayTo() {
-		return mondayTo;
+	public OpeningTime getTuesday() {
+		return tuesday;
 	}
 
-	public void setMondayTo(String mondayTo) {
-		if (mondayTo == null)
-			mondayTo = CLOSED;
-		this.mondayTo = mondayTo;
+	public void setTuesday(OpeningTime tuesday) {
+		if (tuesday == null) {
+			this.tuesday = new OpeningTime();
+		} else {
+			this.tuesday = tuesday;
+		}
 	}
 
-	public String getTuesdayFrom() {
-		return tuesdayFrom;
+	public OpeningTime getWednesday() {
+		return wednesday;
 	}
 
-	public void setTuesdayFrom(String tuesdayFrom) {
-		if (tuesdayFrom == null)
-			tuesdayFrom = CLOSED;
-		this.tuesdayFrom = tuesdayFrom;
+	public void setWednesday(OpeningTime wednesday) {
+		if (wednesday == null) {
+			this.wednesday = new OpeningTime();
+		} else {
+			this.wednesday = wednesday;
+		}
 	}
 
-	public String getTuesDayTo() {
-		return tuesDayTo;
+	public OpeningTime getThursday() {
+		return thursday;
 	}
 
-	public void setTuesDayTo(String tuesDayTo) {
-		if (tuesDayTo == null)
-			tuesDayTo = CLOSED;
-		this.tuesDayTo = tuesDayTo;
+	public void setThursday(OpeningTime thursday) {
+		if (thursday == null) {
+			this.thursday = new OpeningTime();
+		} else {
+			this.thursday = thursday;
+		}
 	}
 
-	public String getWednesdayFrom() {
-		return wednesdayFrom;
+	public OpeningTime getFriday() {
+		return friday;
 	}
 
-	public void setWednesdayFrom(String wednesdayFrom) {
-		if (wednesdayFrom == null)
-			wednesdayFrom = CLOSED;
-		this.wednesdayFrom = wednesdayFrom;
+	public void setFriday(OpeningTime friday) {
+		if (friday == null) {
+			this.friday = new OpeningTime();
+		} else {
+			this.friday = friday;
+		}
 	}
 
-	public String getWednesdayTo() {
-		return wednesdayTo;
+	public OpeningTime getSaturday() {
+		return saturday;
 	}
 
-	public void setWednesdayTo(String wednesdayTo) {
-		if (wednesdayTo == null)
-			wednesdayTo = CLOSED;
-		this.wednesdayTo = wednesdayTo;
+	public void setSaturday(OpeningTime saturday) {
+		if (saturday == null) {
+			this.saturday = new OpeningTime();
+		} else {
+			this.saturday = saturday;
+		}
 	}
 
-	public String getThursdayFrom() {
-		return thursdayFrom;
+	public OpeningTime getSunday() {
+		return sunday;
 	}
 
-	public void setThursdayFrom(String thursdayFrom) {
-		if (thursdayFrom == null)
-			thursdayFrom = CLOSED;
-		this.thursdayFrom = thursdayFrom;
-	}
-
-	public String getThursdayTo() {
-		return thursdayTo;
-	}
-
-	public void setThursdayTo(String thursdayTo) {
-		if (thursdayTo == null)
-			thursdayTo = CLOSED;
-		this.thursdayTo = thursdayTo;
-	}
-
-	public String getFridayFrom() {
-		return fridayFrom;
-	}
-
-	public void setFridayFrom(String fridayFrom) {
-		if (fridayFrom == null)
-			fridayFrom = CLOSED;
-		this.fridayFrom = fridayFrom;
-	}
-
-	public String getFridayTo() {
-		return fridayTo;
-	}
-
-	public void setFridayTo(String fridayTo) {
-		if (fridayTo == null)
-			fridayTo = CLOSED;
-		this.fridayTo = fridayTo;
-	}
-
-	public String getSaturdayFrom() {
-		return saturdayFrom;
-	}
-
-	public void setSaturdayFrom(String saturdayFrom) {
-		if (saturdayFrom == null)
-			saturdayFrom = CLOSED;
-		this.saturdayFrom = saturdayFrom;
-	}
-
-	public String getSaturdayTo() {
-		return saturdayTo;
-	}
-
-	public void setSaturdayTo(String saturdayTo) {
-		if (saturdayTo == null)
-			saturdayTo = CLOSED;
-		this.saturdayTo = saturdayTo;
-	}
-
-	public String getSundayTo() {
-		return sundayTo;
-	}
-
-	public void setSundayTo(String sundayTo) {
-		if (sundayTo == null)
-			sundayTo = CLOSED;
-		this.sundayTo = sundayTo;
-	}
-
-	public String getSundayFrom() {
-		return sundayFrom;
-	}
-
-	public void setSundayFrom(String sundayFrom) {
-		if (sundayFrom == null)
-			sundayFrom = CLOSED;
-		this.sundayFrom = sundayFrom;
+	public void setSunday(OpeningTime sunday) {
+		if (sunday == null) {
+			this.sunday = new OpeningTime();
+		} else {
+			this.sunday = sunday;
+		}
 	}
 }
