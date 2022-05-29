@@ -83,14 +83,13 @@ paths:
         name: order
         description: The order the results should be in
         schema:
-          type: array
-          default: [id]
-          items:
-            enum:
-              - id
-              - name
-              - rating
-              - price
+          type: string
+          default: id
+          enum:
+            - id
+            - name
+            - rating
+            - price
       - in: query
         name: asc
         description: Whether the order should be ascending
