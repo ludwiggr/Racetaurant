@@ -8,11 +8,20 @@ import Restaurant from '../model/restaurant';
 import styles from '../styles/restaurantMap.module.css';
 import { ReactControl } from '../utils/leafletCustomControl';
 import '../utils/leafletDefaultIconFixer';
-import { shallowEqual } from 'fast-equals';
+import { shallowEqual, deepEqual } from 'fast-equals';
 
 /**
  * A RestaurantMap displays the locations of the passed restaurants on a map
  */
+
+const defaultBounds: {
+    southWest: leaflet.LatLngExpression,
+    northEast: leaflet.LatLngExpression,
+} = {
+    southWest: [-90, -180],
+    northEast: [90, 180],
+};
+
 export class RestaurantMap extends React.Component<{
     restaurants: Array<Restaurant>,
     onClick?: (restaurant: Restaurant) => void,
@@ -20,11 +29,15 @@ export class RestaurantMap extends React.Component<{
     padding?: { top?: number, right?: number, bottom?: number, left?: number },
     zoomPosition?: ControlPosition | 'none',
     resetPosition?: ControlPosition | 'none',
+    defaultBounds?: {
+        southWest: leaflet.LatLngExpression,
+        northEast: leaflet.LatLngExpression,
+    },
 }, {
     mapMoved: boolean,
 }> {
 
-    private bounds: leaflet.LatLngBounds;
+    private bounds: leaflet.LatLngBounds = leaflet.latLngBounds(defaultBounds.southWest, defaultBounds.northEast);
     private map: Map | null = null;
 
     constructor(props: any) {
@@ -34,18 +47,11 @@ export class RestaurantMap extends React.Component<{
             mapMoved: false,
         };
 
-        // calculate bounds to fit all restaurants
-        const locations = this.props.restaurants.map(r => r.location);
-        this.bounds = leaflet.latLngBounds([
-            Math.min(...locations.map(l => l.latitude)),
-            Math.min(...locations.map(l => l.longitude))
-        ], [
-            Math.max(...locations.map(l => l.latitude)),
-            Math.max(...locations.map(l => l.longitude))
-        ]);
+        this.calculateBounds();
 
-        this.resetPosition = this.resetPosition.bind(this);
         this.mapMoved = this.mapMoved.bind(this);
+        this.resetPosition = this.resetPosition.bind(this);
+        this.calculateBounds = this.calculateBounds.bind(this);
     }
 
     componentDidMount() {
@@ -66,6 +72,10 @@ export class RestaurantMap extends React.Component<{
     componentDidUpdate(prevProps: any) {
         if (!shallowEqual(this.props.padding, prevProps.padding))
             this.resetPosition();
+        if (!deepEqual(this.props.restaurants, prevProps.restaurants)) {
+            this.calculateBounds();
+            this.resetPosition();
+        }
     }
 
     /**
@@ -80,6 +90,28 @@ export class RestaurantMap extends React.Component<{
             easeLinearity: 0,
         });
         this.setState({ mapMoved: false });
+    }
+
+    /**
+     * Calculates bounds to fit all restaurants.
+     * If no restaurants are given, the map will fit the default bounds.
+     * If no default bounds are given, the map will not change the bounds.
+     * At the start, the map shows the whole world.
+     */
+    calculateBounds() {
+        const locations = this.props.restaurants.map(r => r.location);
+        if (locations.length <= 0) {
+            if (this.props.defaultBounds)
+                this.bounds = leaflet.latLngBounds(this.props.defaultBounds.southWest, this.props.defaultBounds.northEast);
+        } else {
+            this.bounds = leaflet.latLngBounds([
+                Math.min(...locations.map(l => l.latitude)),
+                Math.min(...locations.map(l => l.longitude))
+            ], [
+                Math.max(...locations.map(l => l.latitude)),
+                Math.max(...locations.map(l => l.longitude))
+            ]);
+        }
     }
 
     render() {
