@@ -2,15 +2,15 @@ package de.nullpointerexception.racetaurant.restaurant.model;
 
 import org.hibernate.validator.constraints.URL;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity public class RestaurantImage {
 	@Id @GeneratedValue private Long id;
 
 	@NotNull @URL private String url;
-
-	@ManyToOne(fetch = FetchType.LAZY) private Restaurant restaurant;
 
 	protected RestaurantImage() {
 
@@ -22,10 +22,6 @@ import javax.validation.constraints.NotNull;
 
 	public String getUrl() {
 		return url;
-	}
-
-	public Restaurant getRestaurant() {
-		return restaurant;
 	}
 
 	public Long getId() {

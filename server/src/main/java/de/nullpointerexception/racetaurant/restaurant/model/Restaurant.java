@@ -13,7 +13,7 @@ import java.util.UUID;
 	@NotNull private String name;
 	@NotNull @URL private String website;
 	@NotNull private double rating;
-	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL) @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> restaurantImages;
+	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "imageId") @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> restaurantImages;
 
 	@NotNull private PriceCategory priceCategory;
 
