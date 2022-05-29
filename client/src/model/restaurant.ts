@@ -58,3 +58,7 @@ export const isRestaurant = (restaurant: any): restaurant is Restaurant => {
         (isRestaurantLayout(restaurant.layout)) && //
         (isOpeningTimes(restaurant.open));
 };
+
+export const isRestaurantArray = (restaurants: any): restaurants is Array<Restaurant> => {
+    return (Array.isArray(restaurants)) && ((restaurants).every(isRestaurant));
+}
