@@ -3,6 +3,8 @@ package de.nullpointerexception.racetaurant.restaurant.model;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.UUID;
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", insertable = false, updatable = false, nullable = false) private UUID id;
 	@NotNull private String name;
 	@NotNull @URL private String website;
-	@NotNull private double rating;
+	@NotNull @Min(value = 0, message = "The minimum average rating is 0.") @Max(value = 5, message = "The maximum average rating is 5.") private double rating;
 	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "imageId") @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> restaurantImages;
 
 	@NotNull private PriceCategory priceCategory;
