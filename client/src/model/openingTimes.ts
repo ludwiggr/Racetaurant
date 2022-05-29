@@ -35,3 +35,13 @@ type Time = {
 export default OpeningTimes;
 
 export type { Time };
+
+export const isTime = (time: any): time is Time => {
+    return ((typeof time === "string") && (time === "closed")) || //
+        ((typeof time === "object") && (typeof time.from === "string") && (typeof time.to === "string"));
+};
+
+export const isOpeningTimes = (openingTimes: any): openingTimes is OpeningTimes => {
+    return (typeof openingTimes === "object") && //
+        ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => openingTimes[day]).every(isTime);
+};

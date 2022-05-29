@@ -3,3 +3,8 @@ enum Cuisine {
 }
 
 export default Cuisine;
+
+export const isCuisine = (cuisine: any): cuisine is Cuisine => {
+    return (typeof cuisine === "string") && //
+        Object.values(Cuisine).includes(cuisine as Cuisine);
+};
