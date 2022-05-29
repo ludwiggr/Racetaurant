@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
-import { Theme, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import Chip from '@mui/material/Chip';
+import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
-import { FilterProps } from './filter';
-import Cuisine from '../model/cuisine';
-import SelectInput from '@mui/material/Select/SelectInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Select from '@mui/material/Select';
+import { Theme, useTheme } from '@mui/material/styles';
+import React from 'react';
+import Cuisine, { isCuisine } from '../model/cuisine';
 
 
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
@@ -21,14 +19,8 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
     };
 }
 
-const FilterCuisine: React.FC<FilterProps> = ({ filter, setFilter }) => {
+const FilterCuisine: React.FC<{ cuisines: Array<Cuisine>, setCuisines: (cuisines: Array<Cuisine>) => void }> = ({ cuisines, setCuisines }) => {
     const theme = useTheme();
-
-    const handleCuisine = (
-        event: SelectChangeEvent<typeof filter["cuisines"]>
-    ) => {
-        setFilter({ ...filter, cuisines: event.target.value as Cuisine[] });
-    };
 
     //Build cuisineFilter
     const renderFilterCuisine = (): JSX.Element => {
@@ -38,8 +30,13 @@ const FilterCuisine: React.FC<FilterProps> = ({ filter, setFilter }) => {
                 labelId="multiple-cuisines-label"
                 id="multiple-cuisines"
                 multiple
-                value={filter["cuisines"]}
-                onChange={handleCuisine}
+                value={cuisines}
+                onChange={(e) => {
+                    if (e.target.value instanceof Array<Cuisine>)
+                        setCuisines(e.target.value);
+                    if (isCuisine(e.target.value))
+                        setCuisines([e.target.value]);
+                }}
                 input={<OutlinedInput id="multiple-cuisines" label="cuisine" />}
                 renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -53,7 +50,7 @@ const FilterCuisine: React.FC<FilterProps> = ({ filter, setFilter }) => {
                     <MenuItem
                         key={name}
                         value={name}
-                        style={getStyles(name, filter["cuisines"], theme)}
+                        style={getStyles(name, cuisines, theme)}
                     >
                         {name}
                     </MenuItem>

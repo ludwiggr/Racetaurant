@@ -1,74 +1,23 @@
-import * as React from 'react';
+import { Rating } from '@mui/material';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import PriceCategory from '../model/priceCategory';
-import Cuisine from '../model/cuisine';
-import { useTheme, Rating, SelectChangeEvent, Theme, Input } from '@mui/material';
-import FilterCuisine from './filterCuisine';
 import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import deLocale from 'date-fns/locale/de';
+import * as React from 'react';
+import { FilterOptions } from '../model/api';
+import PriceCategory from '../model/priceCategory';
+import FilterCuisine from './filterCuisine';
 
-export interface FilterProps {
-    filter: {
-        price: PriceCategory, //done
-        latitude?: number,
-        longitude?: number,
-        radius?: number,
-        cuisines: Array<Cuisine>, //done
-        rating_min?: number,
-        rating_max?: number,
-        time_start?: Date,
-        time_stop?: Date,
-        persons?: number,
-    },
-    setFilter: React.Dispatch<React.SetStateAction<{
-        price: PriceCategory, //done
-        latitude?: number,
-        longitude?: number,
-        radius?: number,
-        cuisines: Array<Cuisine>, //done
-        rating_min?: number, //odne
-        rating_max?: number, //done
-        time_start?: Date, //done
-        time_stop?: Date, // done
-        persons?: number, //done
-    }>>
-}
+const Filter: React.FC<{ filter: FilterOptions, setFilter: (filter: FilterOptions) => void }> = ({ filter, setFilter }) => {
+    const range = (start: number = 0, end: number = 5) => Array.from({ length: ((end + 1) - start) }, (_v, k) => k + start);
 
-
-const times: Date[] = [
-    new Date('2013-08-03T00:00:00'),
-    new Date('2013-08-03T01:00:00'),
-    new Date('2013-08-03T02:00:00'),
-    new Date('2013-08-03T03:00:00'),
-    new Date('2013-08-03T04:00:00'),
-    new Date('2013-08-03T05:00:00'),
-    new Date('2013-08-03T06:00:00'),
-    new Date('2013-08-03T07:00:00'),
-    new Date('2013-08-03T08:00:00'),
-    new Date('2013-08-03T09:00:00'),
-    new Date('2013-08-03T10:00:00'),
-    new Date('2013-08-03T11:00:00'),
-    new Date('2013-08-03T12:00:00'),
-    new Date('2013-08-03T13:00:00'),
-    new Date('2013-08-03T14:00:00'),
-    new Date('2013-08-03T15:00:00'),
-    new Date('2013-08-03T16:00:00'),
-    new Date('2013-08-03T17:00:00'),
-    new Date('2013-08-03T18:00:00'),
-    new Date('2013-08-03T19:00:00'),
-    new Date('2013-08-03T20:00:00'),
-    new Date('2013-08-03T21:00:00'),
-    new Date('2013-08-03T22:00:00'),
-    new Date('2013-08-03T23:00:00'),
-    new Date('2013-08-03T23:59:00'),
-]
-
-
-
-const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
-    const range = (start: number = 0, end: number = 5) => Array.from({ length: ((end + 1) - start) }, (v, k) => k + start);
-    const rangeDate = (start: Date = times[0], end: Date = times[times.length - 1]) => Array.from({ length: (times.indexOf(end) - times.indexOf(start) + 1) }, (v, k) => k + times.indexOf(start))
+    const [latitude, setLatitude] = React.useState('');
+    const [longitude, setLongitude] = React.useState('');
+    const [radius, setRadius] = React.useState('');
 
     const parsePrice = (n: number): PriceCategory => {
         switch (n) {
@@ -106,48 +55,49 @@ const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
         })
     }
 
-    const handleTimeStart = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTimeStart = (value: Date | null) => {
         setFilter({
             ...filter,
-            time_start: times[parseInt(event.target.value)]
+            time_start: value === null ? undefined : value
         })
     }
 
-    const handleTimeStop = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTimeStop = (value: Date | null) => {
         setFilter({
             ...filter,
-            time_stop: times[parseInt(event.target.value)]
+            time_stop: value === null ? undefined : value
         })
     }
 
-    const handleAmountPerson = (event: Event, value: number | number[], activeThumb: number) => {
+    const handleAmountPerson = (_event: Event, value: number | number[]) => {
         setFilter({
             ...filter,
-            persons: activeThumb
+            persons: Array.isArray(value) ? value[0] : value
         })
     }
 
     const handleLong = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLongitude(event.target.value);
         setFilter({
             ...filter,
-            longitude: parseInt(event.target.value)
-        })
+            longitude: parseFloat(event.target.value)
+        });
     }
     const handleLat = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setLatitude(event.target.value);
         setFilter({
             ...filter,
-            latitude: parseInt(event.target.value)
-        })
+            latitude: parseFloat(event.target.value)
+        });
     }
     const handleRadius = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRadius(event.target.value);
         setFilter({
             ...filter,
-            radius: parseInt(event.target.value)
-        })
+            radius: parseFloat(event.target.value)
+        });
     }
 
-
-    console.log(filter)
     return (
         <Box
             component="form"
@@ -161,13 +111,13 @@ const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
             autoComplete="off"
         >
             <div>
-                <FilterCuisine filter={filter} setFilter={setFilter} />
+                <FilterCuisine cuisines={filter["cuisines"] || []} setCuisines={(cuisines) => setFilter({ ...filter, cuisines: cuisines })} />
                 <TextField
                     fullWidth={true}
                     id="preis-select"
                     select
                     label="Preis"
-                    value={filter["price"]}
+                    value={filter["price"] || 0}
                     onChange={handlePriceCategory}
                 // helperText="Wähle die Preisstufe"
                 >
@@ -182,7 +132,7 @@ const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
                     fullWidth={true}
                     select
                     label="rating_min"
-                    value={filter["rating_min"]}
+                    value={filter["rating_min"] || 0}
                     onChange={handleMinRating}
                     helperText="Bitte wähle ein Rating"
                 >
@@ -199,7 +149,7 @@ const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
                     fullWidth={true}
                     select
                     label="rating_max"
-                    value={filter["rating_max"]}
+                    value={filter["rating_max"] || 5}
                     onChange={handleMaxRating}
                     helperText="Bitte wähle maximum"
                 >
@@ -214,41 +164,32 @@ const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
                 </TextField>
             </div>
             <div>
-                <TextField
-                    id="time_start-select"
-                    fullWidth={true}
-                    select
-                    label="time_start"
-                    value={filter["time_start"]}
-                    onChange={handleTimeStart}
-                    helperText="time_start"
-                >
-                    {rangeDate(times[0], filter["time_stop"]).map(value => <MenuItem key={value + "start"} value={value}>
-                        {times[value].getHours() < 10 ? "0" : ""}{times[value].getHours()}:{times[value].getMinutes() < 10 ? "0" : ""}{times[value].getMinutes()}
-                    </MenuItem>
-
-                    )}
-                </TextField>
-                <TextField
-                    id="time_stop-select"
-                    fullWidth={true}
-                    select
-                    label="time_stop"
-                    value={filter["time_stop"]}
-                    onChange={handleTimeStop}
-                    helperText="time_stop"
-                >
-                    {rangeDate(filter["time_start"], times[times.length - 1]).map(value => <MenuItem key={value + "end"} value={value}>
-                        {times[value].getHours() < 10 ? "0" : ""}{times[value].getHours()}:{times[value].getMinutes() < 10 ? "0" : ""}{times[value].getMinutes()}
-                    </MenuItem>
-                    )}
-                </TextField>
+                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
+                    <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        label="Start Time"
+                        maxDateTime={filter["time_stop"]}
+                        value={filter["time_start"] || null}
+                        onChange={handleTimeStart}
+                        mask="__.__.____ __:__"
+                    />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={deLocale}>
+                    <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        label="Stop Time"
+                        minDateTime={filter["time_start"]}
+                        value={filter["time_stop"] || null}
+                        onChange={handleTimeStop}
+                        mask="__.__.____ __:__"
+                    />
+                </LocalizationProvider>
             </div>
             <div>
                 <Box sx={{ m: 1, width: 300 }}>
                     Anzahl Personen
                     <Slider
-                        defaultValue={1}
+                        value={filter["persons"] || 1}
                         getAriaValueText={(v) => '' + v}
                         step={1}
                         marks
@@ -260,9 +201,9 @@ const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
                 </Box>
             </div>
             <div>
-                <TextField id="outlined-latitude" label="latitude" variant="outlined" onChange={handleLat} />
-                <TextField id="outlined-longitude" label="longitude" variant="outlined" onChange={handleLong} />
-                <TextField id="outlined-radius" label="radius" variant="outlined" onChange={handleRadius} />
+                <TextField id="outlined-latitude" label="latitude" variant="outlined" value={latitude} onChange={handleLat} onBlur={() => setLatitude(filter["latitude"]?.toString() || '')} />
+                <TextField id="outlined-longitude" label="longitude" variant="outlined" value={longitude} onChange={handleLong} onBlur={() => setLongitude(filter["longitude"]?.toString() || '')} />
+                <TextField id="outlined-radius" label="radius" variant="outlined" value={radius} onChange={handleRadius} onBlur={() => setRadius(filter["radius"]?.toString() || '')} />
             </div>
         </Box>
     );
