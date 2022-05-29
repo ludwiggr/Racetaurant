@@ -1,4 +1,4 @@
-package de.nullpointerexception.racetaurant.restaurant;
+package de.nullpointerexception.racetaurant.restaurant.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

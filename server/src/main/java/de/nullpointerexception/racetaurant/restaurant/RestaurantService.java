@@ -1,5 +1,9 @@
 package de.nullpointerexception.racetaurant.restaurant;
 
+import de.nullpointerexception.racetaurant.restaurant.model.Cuisine;
+import de.nullpointerexception.racetaurant.restaurant.model.Order;
+import de.nullpointerexception.racetaurant.restaurant.model.PriceCategory;
+import de.nullpointerexception.racetaurant.restaurant.model.Restaurant;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -8,6 +12,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,9 +26,31 @@ import java.util.UUID;
 		this.restaurantRepository = restaurantRepository;
 	}
 
+	/**
+	 * Gets all restaurants stored in the database meeting the passed filters.
+	 * All parameters are optional (just pass <code>null</code>). Some parameters
+	 * take default values if they are <code>null</code>.
+	 *
+	 * @param start            the amount of restaurants to skip (default value: 0)
+	 * @param limit            the maximum amount of restaurants to return (default value: 50)
+	 * @param priceCategory    the required price category
+	 * @param latitude         the target's latitude
+	 * @param longitude        the target's longitude
+	 * @param radius           the maximum restaurant distance (in kilometres) from the target position (default: <code>1km</code>)
+	 * @param requiredCuisines the cuisines the restaurant has to offer
+	 * @param ratingMin        the restaurant's minimum average rating
+	 * @param ratingMax        the restaurant's maximum average rating
+	 * @param timeStart        the ISO 8601 timestamp from when a free table should be available
+	 * @param timeStop         the ISO 8601 timestamp until when a free table should be available
+	 * @param persons          the minimum amount of free places a free table of the restaurant has to offer in the given time interval
+	 * @param order            the attribute to sort by
+	 * @param ascending        whether to sort ascending (default: false)
+	 * @return all restaurants stored in the database meeting the passed filters
+	 */
 	public List<Restaurant> getRestaurantsWithFilter(Integer start, Integer limit, PriceCategory priceCategory,
-			Double latitude, Double longitude, Double radius, CuisineType[] requiredCuisines, Double ratingMin,
-			Double ratingMax, String timeStart, String timeStop, Integer persons, String order, Boolean asc) {
+			Double latitude, Double longitude, Double radius, Cuisine[] requiredCuisines, Double ratingMin,
+			Double ratingMax, LocalDateTime timeStart, LocalDateTime timeStop, Integer persons, Order order,
+			Boolean ascending) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Restaurant> cq = cb.createQuery(Restaurant.class);
 
@@ -92,12 +119,12 @@ import java.util.UUID;
 		// @formatter:on
 
 		// Sort (default is descending by id)
-		asc = asc != null && asc;
-		order = order == null ? "id" : order;
-		if (asc) {
-			cq.orderBy(cb.asc(root.get(order)));
+		ascending = ascending != null && ascending;
+		order = order == null ? Order.ID : order;
+		if (ascending) {
+			cq.orderBy(cb.asc(root.get(order.getColumnName())));
 		} else {
-			cq.orderBy(cb.desc(root.get(order)));
+			cq.orderBy(cb.desc(root.get(order.getColumnName())));
 		}
 
 		TypedQuery<Restaurant> createdQuery = em.createQuery(cq);
@@ -125,12 +152,12 @@ import java.util.UUID;
 		}
 	}
 
-	private List<Restaurant> filterRestaurantsByCuisines(List<Restaurant> restaurants, CuisineType[] requiredCuisines) {
+	private List<Restaurant> filterRestaurantsByCuisines(List<Restaurant> restaurants, Cuisine[] requiredCuisines) {
 		return restaurants.stream().filter(r -> {
-			for (CuisineType requiredCuisine : requiredCuisines) {
+			for (Cuisine requiredCuisine : requiredCuisines) {
 				boolean containsRequiredCuisine = false;
 				for (Cuisine restaurantCuisine : r.getCuisines()) {
-					if (restaurantCuisine.getCuisineType() == requiredCuisine) {
+					if (restaurantCuisine == requiredCuisine) {
 						containsRequiredCuisine = true;
 						break;
 					}

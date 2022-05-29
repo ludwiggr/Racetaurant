@@ -1,21 +1,18 @@
-package de.nullpointerexception.racetaurant.restaurant;
+package de.nullpointerexception.racetaurant.restaurant.model;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
 @Entity @Table(name = "restaurants") public class Restaurant {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id", insertable = false, updatable = false, nullable = false)
-	private UUID id;
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", insertable = false, updatable = false, nullable = false) private UUID id;
 	private String name;
 	private String website;
 	private double rating;
 	@OneToMany(mappedBy = "restaurant") private List<RestaurantImage> restaurantImages;
 	private PriceCategory priceCategory;
-	@ManyToMany(cascade = { CascadeType.MERGE,
-			CascadeType.PERSIST }) @JoinTable(name = "restaurantCuisines", joinColumns = @JoinColumn(name = "restaurantId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "cuisineId", referencedColumnName = "id")) private List<Cuisine> cuisines;
+
+	@ElementCollection(targetClass = Cuisine.class) @JoinTable(name = "restaurantsCuisines", joinColumns = @JoinColumn(name = "id")) @Column(name = "cuisine", nullable = false) @Enumerated(EnumType.STRING) private List<Cuisine> cuisines;
 	@OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "locationId", referencedColumnName = "id") private Location location;
 	// Restaurant layouts are optional because we haven't implemented them yet
 	@OneToOne(optional = true, cascade = CascadeType.ALL) @JoinColumn(name = "layoutId", referencedColumnName = "id") private RestaurantLayout layout;
