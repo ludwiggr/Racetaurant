@@ -12,3 +12,10 @@ class Location {
 }
 
 export default Location;
+
+export const isLocation = (location: any): location is Location => {
+    return (typeof location === "object") && //
+        (typeof location.latitude === "number") && //
+        (typeof location.longitude === "number") && //
+        (typeof location.address === "string");
+};
