@@ -3,7 +3,7 @@ import PriceCategory from "./priceCategory";
 import Cuisine from "./cuisine";
 import axios from "axios";
 
-const getRestaurants = (filter?: {
+export type FilterOptions = {
     price?: PriceCategory,
     latitude?: number,
     longitude?: number,
@@ -14,7 +14,9 @@ const getRestaurants = (filter?: {
     time_start?: Date,
     time_stop?: Date,
     persons?: number,
-}, start?: number, limit?: number, order?: "id" | "name" | "rating", asc?: boolean): Promise<Array<Restaurant>> => {
+}
+
+const getRestaurants = (filter?: FilterOptions, start?: number, limit?: number, order?: "id" | "name" | "rating", asc?: boolean): Promise<Array<Restaurant>> => {
     return new Promise((resolve, reject) => {
         axios.get("/api/restaurants", {
             params: { ...filter, start: start, limit: limit, order: order, asc: asc }
