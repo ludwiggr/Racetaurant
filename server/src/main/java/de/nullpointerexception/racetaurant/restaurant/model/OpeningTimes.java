@@ -4,27 +4,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity @Table(name = "restaurantsOpeningTimes") public class OpeningTimes {
 	@Id @GeneratedValue private Long id;
+	private static final String CLOSED = "closed";
 
-	private String mondayFrom;
-	private String mondayTo;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'mondayFrom'.") private String mondayFrom = CLOSED;
 
-	private String tuesdayFrom;
-	private String tuesDayTo;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'mondayTo'.") private String mondayTo = CLOSED;
 
-	private String wednesdayFrom;
-	private String wednesdayTo;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'tuesdayFrom'.") private String tuesdayFrom = CLOSED;
 
-	private String thursdayFrom;
-	private String thursdayTo;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'tuesdayTo'.") private String tuesDayTo = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'wednesdayFrom'.") private String wednesdayFrom = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'wednesdayTo'.") private String wednesdayTo = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'thursdayFrom'.") private String thursdayFrom = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'thursdayTo'.") private String thursdayTo = CLOSED;
 
-	private String fridayFrom;
-	private String fridayTo;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'fridayFrom'.") private String fridayFrom = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'fridayTo'.") private String fridayTo = CLOSED;
 
-	private String saturdayFrom;
-	private String saturdayTo;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'saturdayFrom'.") private String saturdayFrom = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'saturdayTo'.") private String saturdayTo = CLOSED;
+
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'sundayFrom'.") private String sundayFrom = CLOSED;
+	@NotNull @Pattern(regexp = "^(([01]\\d|2[0-3]):([0-5]\\d)|closed)$", message = "Invalid time format for 'sundayTo'.") private String sundayTo = CLOSED;
 
 	public OpeningTimes() {
 
@@ -32,19 +38,27 @@ import javax.persistence.Table;
 
 	public OpeningTimes(String mondayFrom, String mondayTo, String tuesdayFrom, String tuesDayTo, String wednesdayFrom,
 			String wednesdayTo, String thursdayFrom, String thursdayTo, String fridayFrom, String fridayTo,
-			String saturdayFrom, String saturdayTo) {
-		this.mondayFrom = mondayFrom;
-		this.mondayTo = mondayTo;
-		this.tuesdayFrom = tuesdayFrom;
-		this.tuesDayTo = tuesDayTo;
-		this.wednesdayFrom = wednesdayFrom;
-		this.wednesdayTo = wednesdayTo;
-		this.thursdayFrom = thursdayFrom;
-		this.thursdayTo = thursdayTo;
-		this.fridayFrom = fridayFrom;
-		this.fridayTo = fridayTo;
-		this.saturdayFrom = saturdayFrom;
-		this.saturdayTo = saturdayTo;
+			String saturdayFrom, String saturdayTo, String sundayFrom, String sundayTo) {
+		setMondayFrom(mondayFrom);
+		setMondayTo(mondayTo);
+
+		setTuesdayFrom(tuesdayFrom);
+		setTuesDayTo(tuesDayTo);
+
+		setWednesdayFrom(wednesdayFrom);
+		setWednesdayTo(wednesdayTo);
+
+		setThursdayFrom(thursdayFrom);
+		setThursdayTo(thursdayTo);
+
+		setFridayFrom(fridayFrom);
+		setFridayTo(fridayTo);
+
+		setSaturdayFrom(saturdayFrom);
+		setSaturdayTo(saturdayTo);
+
+		setSundayFrom(sundayFrom);
+		setSundayTo(sundayTo);
 	}
 
 	public Long getId() {
@@ -56,6 +70,8 @@ import javax.persistence.Table;
 	}
 
 	public void setMondayFrom(String mondayFrom) {
+		if (mondayFrom == null)
+			mondayFrom = CLOSED;
 		this.mondayFrom = mondayFrom;
 	}
 
@@ -64,6 +80,8 @@ import javax.persistence.Table;
 	}
 
 	public void setMondayTo(String mondayTo) {
+		if (mondayTo == null)
+			mondayTo = CLOSED;
 		this.mondayTo = mondayTo;
 	}
 
@@ -72,6 +90,8 @@ import javax.persistence.Table;
 	}
 
 	public void setTuesdayFrom(String tuesdayFrom) {
+		if (tuesdayFrom == null)
+			tuesdayFrom = CLOSED;
 		this.tuesdayFrom = tuesdayFrom;
 	}
 
@@ -80,6 +100,8 @@ import javax.persistence.Table;
 	}
 
 	public void setTuesDayTo(String tuesDayTo) {
+		if (tuesDayTo == null)
+			tuesDayTo = CLOSED;
 		this.tuesDayTo = tuesDayTo;
 	}
 
@@ -88,6 +110,8 @@ import javax.persistence.Table;
 	}
 
 	public void setWednesdayFrom(String wednesdayFrom) {
+		if (wednesdayFrom == null)
+			wednesdayFrom = CLOSED;
 		this.wednesdayFrom = wednesdayFrom;
 	}
 
@@ -96,6 +120,8 @@ import javax.persistence.Table;
 	}
 
 	public void setWednesdayTo(String wednesdayTo) {
+		if (wednesdayTo == null)
+			wednesdayTo = CLOSED;
 		this.wednesdayTo = wednesdayTo;
 	}
 
@@ -104,6 +130,8 @@ import javax.persistence.Table;
 	}
 
 	public void setThursdayFrom(String thursdayFrom) {
+		if (thursdayFrom == null)
+			thursdayFrom = CLOSED;
 		this.thursdayFrom = thursdayFrom;
 	}
 
@@ -112,6 +140,8 @@ import javax.persistence.Table;
 	}
 
 	public void setThursdayTo(String thursdayTo) {
+		if (thursdayTo == null)
+			thursdayTo = CLOSED;
 		this.thursdayTo = thursdayTo;
 	}
 
@@ -120,6 +150,8 @@ import javax.persistence.Table;
 	}
 
 	public void setFridayFrom(String fridayFrom) {
+		if (fridayFrom == null)
+			fridayFrom = CLOSED;
 		this.fridayFrom = fridayFrom;
 	}
 
@@ -128,6 +160,8 @@ import javax.persistence.Table;
 	}
 
 	public void setFridayTo(String fridayTo) {
+		if (fridayTo == null)
+			fridayTo = CLOSED;
 		this.fridayTo = fridayTo;
 	}
 
@@ -136,6 +170,8 @@ import javax.persistence.Table;
 	}
 
 	public void setSaturdayFrom(String saturdayFrom) {
+		if (saturdayFrom == null)
+			saturdayFrom = CLOSED;
 		this.saturdayFrom = saturdayFrom;
 	}
 
@@ -144,6 +180,28 @@ import javax.persistence.Table;
 	}
 
 	public void setSaturdayTo(String saturdayTo) {
+		if (saturdayTo == null)
+			saturdayTo = CLOSED;
 		this.saturdayTo = saturdayTo;
+	}
+
+	public String getSundayTo() {
+		return sundayTo;
+	}
+
+	public void setSundayTo(String sundayTo) {
+		if (sundayTo == null)
+			sundayTo = CLOSED;
+		this.sundayTo = sundayTo;
+	}
+
+	public String getSundayFrom() {
+		return sundayFrom;
+	}
+
+	public void setSundayFrom(String sundayFrom) {
+		if (sundayFrom == null)
+			sundayFrom = CLOSED;
+		this.sundayFrom = sundayFrom;
 	}
 }

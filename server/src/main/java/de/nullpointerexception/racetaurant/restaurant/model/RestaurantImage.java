@@ -1,12 +1,16 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
+import org.hibernate.validator.constraints.URL;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity public class RestaurantImage {
 	@Id @GeneratedValue private Long id;
-	private String url;
 
-	@ManyToOne(optional = false) @JoinColumn(name = "restaurantId", referencedColumnName = "id") private Restaurant restaurant;
+	@NotNull @URL private String url;
+
+	@ManyToOne(fetch = FetchType.LAZY) private Restaurant restaurant;
 
 	protected RestaurantImage() {
 

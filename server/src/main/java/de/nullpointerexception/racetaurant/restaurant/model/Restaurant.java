@@ -1,22 +1,26 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
+import org.hibernate.validator.constraints.URL;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
 @Entity @Table(name = "restaurants") public class Restaurant {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", insertable = false, updatable = false, nullable = false) private UUID id;
-	private String name;
-	private String website;
-	private double rating;
-	@OneToMany(mappedBy = "restaurant") private List<RestaurantImage> restaurantImages;
-	private PriceCategory priceCategory;
+	@NotNull private String name;
+	@NotNull @URL private String website;
+	@NotNull private double rating;
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL) @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> restaurantImages;
 
-	@ElementCollection(targetClass = Cuisine.class) @JoinTable(name = "restaurantsCuisines", joinColumns = @JoinColumn(name = "id")) @Column(name = "cuisine", nullable = false) @Enumerated(EnumType.STRING) private List<Cuisine> cuisines;
-	@OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "locationId", referencedColumnName = "id") private Location location;
-	// Restaurant layouts are optional because we haven't implemented them yet
-	@OneToOne(optional = true, cascade = CascadeType.ALL) @JoinColumn(name = "layoutId", referencedColumnName = "id") private RestaurantLayout layout;
-	@OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "openingTimesId", referencedColumnName = "id") private OpeningTimes times;
+	@NotNull private PriceCategory priceCategory;
+
+	@NotNull @ElementCollection(targetClass = Cuisine.class) @JoinTable(name = "restaurantsCuisines", joinColumns = @JoinColumn(name = "id")) @Column(name = "cuisine", nullable = false) @Enumerated(EnumType.STRING) private List<Cuisine> cuisines;
+	@NotNull @OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "locationId", referencedColumnName = "id") private Location location;
+	@NotNull @OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "layoutId", referencedColumnName = "id") private RestaurantLayout layout;
+	@NotNull @OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "openingTimesId", referencedColumnName = "id") private OpeningTimes open;
 
 	protected Restaurant() {
 
@@ -24,7 +28,7 @@ import java.util.UUID;
 
 	public Restaurant(String name, String website, double rating, List<RestaurantImage> restaurantImages,
 			PriceCategory priceCategory, List<Cuisine> cuisines, Location location, RestaurantLayout layout,
-			OpeningTimes times) {
+			OpeningTimes open) {
 		this.name = name;
 		this.website = website;
 		this.rating = rating;
@@ -33,7 +37,7 @@ import java.util.UUID;
 		this.cuisines = cuisines;
 		this.location = location;
 		this.layout = layout;
-		this.times = times;
+		this.open = open;
 	}
 
 	public UUID getId() {
@@ -104,11 +108,11 @@ import java.util.UUID;
 		this.layout = layout;
 	}
 
-	public OpeningTimes getTimes() {
-		return times;
+	public OpeningTimes getOpen() {
+		return open;
 	}
 
-	public void setTimes(OpeningTimes times) {
-		this.times = times;
+	public void setOpen(OpeningTimes times) {
+		this.open = times;
 	}
 }

@@ -4,12 +4,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity @Table(name = "restaurantsLocation") public class Location {
 	@Id @GeneratedValue private Long id;
-	private double latitude;
-	private double longitude;
-	private String address;
+
+	@NotNull @Min(value = -90, message = "A location's minimum latitude is -90.") @Max(value = 90, message = "A location's maximum latitude is 90.") private double latitude;
+
+	@NotNull @Min(value = -90, message = "A location's minimum longitude is -90.") @Max(value = 90, message = "A location's maximum longitude is 90.") private double longitude;
+
+	@NotNull private String address;
 
 	protected Location() {
 
