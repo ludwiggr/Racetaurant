@@ -15,7 +15,7 @@ import java.util.UUID;
 	@NotNull private String name;
 	@NotNull @URL private String website;
 	@NotNull @Min(value = 0, message = "The minimum average rating is 0.") @Max(value = 5, message = "The maximum average rating is 5.") private double rating;
-	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "imageId") @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> restaurantImages;
+	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "imageId") @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> images;
 
 	@NotNull private PriceCategory priceCategory;
 
@@ -28,13 +28,13 @@ import java.util.UUID;
 
 	}
 
-	public Restaurant(String name, String website, double rating, List<RestaurantImage> restaurantImages,
+	public Restaurant(String name, String website, double rating, List<RestaurantImage> images,
 			PriceCategory priceCategory, List<Cuisine> cuisines, Location location, RestaurantLayout layout,
 			OpeningTimes open) {
 		this.name = name;
 		this.website = website;
 		this.rating = rating;
-		this.restaurantImages = restaurantImages;
+		this.images = images;
 		this.priceCategory = priceCategory;
 		this.cuisines = cuisines;
 		this.location = location;
@@ -70,12 +70,12 @@ import java.util.UUID;
 		this.rating = rating;
 	}
 
-	public List<RestaurantImage> getRestaurantImages() {
-		return restaurantImages;
+	public List<RestaurantImage> getImages() {
+		return images;
 	}
 
-	public void setRestaurantImages(List<RestaurantImage> restaurantImages) {
-		this.restaurantImages = restaurantImages;
+	public void setImages(List<RestaurantImage> restaurantImages) {
+		this.images = restaurantImages;
 	}
 
 	public PriceCategory getPriceCategory() {

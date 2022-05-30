@@ -1,5 +1,6 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import javax.validation.constraints.NotNull;
 		this.url = url;
 	}
 
-	public String getUrl() {
+	@JsonValue public String getUrl() {
 		return url;
 	}
 
