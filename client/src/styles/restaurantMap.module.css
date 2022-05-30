@@ -1,0 +1,21 @@
+.reset-view-button {
+    cursor: pointer;
+}
+
+.reset-view-button.shown {
+    animation: fade-in 0.2s ease-out forwards;
+}
+
+.reset-view-button.hidden {
+    display: none;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,39 @@
+.sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    /* compatibility: */
+    width: 30%;
+    width: min(max(30%, 600px), calc(100vw - 2 * 12px));
+    margin: 12px;
+    overflow: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.restaurant-info-container {
+    padding: 8px;
+}
+
+.filter-backdrop {
+    background: #00000099;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.filter-container {
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
