@@ -1,0 +1,108 @@
+@startuml
+
+class "Cuisine" {
+  id : Long
+  cuisineType : CuisineType
+}
+
+enum "CuisineType" {
+  BALKAN
+  ASIAN
+  ITALIAN
+  GERMAN
+  INDIAN
+  TURKISH
+  GREEK
+  AMERICAN
+  id
+  parse(String) : CuisineType
+}
+
+class "InvalidQueryParameterException"
+
+class "Location" {
+  id : Long
+  latitude : double
+  longitude : double
+  address : String
+}
+
+class "OpeningTimes" {
+  id : Long
+  mondayFrom : String
+  mondayTo : String
+  tuesdayFrom : String
+  tuesDayTo : String
+  wednesdayFrom : String
+  wednesdayTo : String
+  thursdayFrom : String
+  thursdayTo : String
+  fridayFrom : String
+  fridayTo : String
+  saturdayFrom : String
+  saturdayTo : String
+}
+
+enum "PriceCategory" {
+  CHEAP
+  MEDIUM
+  EXPENSIVE
+  value
+}
+
+class "RacetaurantApplication" {
+  restaurantRepository : RestaurantRepository
+}
+
+class "Restaurant" {
+  id : UUID
+  name : String
+  website : String
+  rating : double
+  restaurantImages : List<RestaurantImage>
+  priceCategory : PriceCategory
+  cuisines : List<Cuisine>
+  location : Location
+  layout : RestaurantLayout
+  times : OpeningTimes
+}
+
+class "RestaurantController" {
+  service : RestaurantService
+}
+
+class "RestaurantImage" {
+  id : Long
+  url : String
+  restaurant : Restaurant
+}
+
+class "RestaurantLayout" {
+  id : Long
+}
+
+class "RestaurantNotFoundException"
+
+interface "RestaurantRepository"
+
+class "RestaurantService" {
+  restaurantRepository : RestaurantRepository
+  em : EntityManager
+  getRestaurantById(UUID) : Optional<Restaurant>
+  getRestaurantsWithFilter(Integer, Integer, PriceCategory, Double, Double, Double, CuisineType[], Double, Double, String, String, Integer, String, Boolean) : List<Restaurant>
+}
+
+"Cuisine" --> "CuisineType" : cuisineType
+"RacetaurantApplication" --> "RestaurantRepository" : restaurantRepository
+"RestaurantController" --> "RestaurantService" : service
+"Restaurant" --> "*" "Cuisine" : cuisines
+"Restaurant" --> "Location" : location
+"Restaurant" --> "OpeningTimes" : times
+"Restaurant" --> "PriceCategory" : priceCategory
+"Restaurant" <-> "*" "RestaurantImage" : restaurantImages/restaurant
+"Restaurant" --> "RestaurantLayout" : layout
+"RestaurantService" --> "PriceCategory" : use as priceCategory
+"RestaurantService" --> "Restaurant" : use
+"RestaurantService" --> "RestaurantRepository" : restaurantRepository
+
+@enduml

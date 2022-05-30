@@ -1,7 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.7'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id "com.github.roroche.plantuml" version '1.0.2'
 }
 
 group = 'de.nullpointerexception'
@@ -9,14 +10,23 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+classDiagram {
+    packageName = "de.nullpointerexception.racetaurant"
+    outputFile = project.file('../docs/analysis_object_model.plantuml')
 }

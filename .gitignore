@@ -90,3 +90,10 @@ out
 # Gradle
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
+
+################
+# VS Code
+.vscode/*
+
+# Local History for Visual Studio Code
+.history/
