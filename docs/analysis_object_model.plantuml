@@ -1,6 +1,11 @@
-@startuml Racetaurant Analysis Object Model
+@startuml
 
-enum "Cuisine" {
+class "Cuisine" {
+  id : Long
+  cuisineType : CuisineType
+}
+
+enum "CuisineType" {
   BALKAN
   ASIAN
   ITALIAN
@@ -9,87 +14,95 @@ enum "Cuisine" {
   TURKISH
   GREEK
   AMERICAN
-  id : int
+  id
+  parse(String) : CuisineType
 }
 
+class "InvalidQueryParameterException"
+
 class "Location" {
+  id : Long
   latitude : double
   longitude : double
   address : String
-  address() : String
-  latitude() : double
-  longitude() : double
 }
 
 class "OpeningTimes" {
-  monday : Time
-  tuesday : Time
-  wednesday : Time
-  thursday : Time
-  friday : Time
-  saturday : Time
-  sunday : Time
-  friday() : Time
-  monday() : Time
-  saturday() : Time
-  sunday() : Time
-  thursday() : Time
-  tuesday() : Time
-  wednesday() : Time
+  id : Long
+  mondayFrom : String
+  mondayTo : String
+  tuesdayFrom : String
+  tuesDayTo : String
+  wednesdayFrom : String
+  wednesdayTo : String
+  thursdayFrom : String
+  thursdayTo : String
+  fridayFrom : String
+  fridayTo : String
+  saturdayFrom : String
+  saturdayTo : String
 }
 
 enum "PriceCategory" {
   CHEAP
   MEDIUM
   EXPENSIVE
-  value : int
+  value
 }
 
-class "RacetaurantApplication"
+class "RacetaurantApplication" {
+  restaurantRepository : RestaurantRepository
+}
 
 class "Restaurant" {
-  id : String
+  id : UUID
   name : String
   website : String
   rating : double
-  images : String[]
+  restaurantImages : List<RestaurantImage>
   priceCategory : PriceCategory
-  cuisines : Cuisine[]
+  cuisines : List<Cuisine>
   location : Location
   layout : RestaurantLayout
   times : OpeningTimes
-  cuisines() : Cuisine[]
-  id() : String
-  images() : String[]
-  layout() : RestaurantLayout
-  location() : Location
-  name() : String
-  priceCategory() : PriceCategory
-  rating() : double
-  times() : OpeningTimes
-  website() : String
 }
 
-class "RestaurantController"
+class "RestaurantController" {
+  service : RestaurantService
+}
 
-class "RestaurantLayout"
+class "RestaurantImage" {
+  id : Long
+  url : String
+  restaurant : Restaurant
+}
+
+class "RestaurantLayout" {
+  id : Long
+}
+
+class "RestaurantNotFoundException"
 
 interface "RestaurantRepository"
 
-class "Time" {
-  from : String
-  to : String
-  closed : boolean
-  closed() : boolean
-  from() : String
-  to() : String
+class "RestaurantService" {
+  restaurantRepository : RestaurantRepository
+  em : EntityManager
+  getRestaurantById(UUID) : Optional<Restaurant>
+  getRestaurantsWithFilter(Integer, Integer, PriceCategory, Double, Double, Double, CuisineType[], Double, Double, String, String, Integer, String, Boolean) : List<Restaurant>
 }
 
-"OpeningTimes" --> "7" "Time" : monday/tuesday/wednesday/thursday/friday/saturday/sunday
+"Cuisine" --> "CuisineType" : cuisineType
+"RacetaurantApplication" --> "RestaurantRepository" : restaurantRepository
+"RestaurantController" --> "RestaurantService" : service
+"Restaurant" --> "*" "Cuisine" : cuisines
 "Restaurant" --> "Location" : location
 "Restaurant" --> "OpeningTimes" : times
 "Restaurant" --> "PriceCategory" : priceCategory
+"Restaurant" <-> "*" "RestaurantImage" : restaurantImages/restaurant
 "Restaurant" --> "RestaurantLayout" : layout
-"Restaurant" --> "*" "Cuisine" : cuisines
+"RestaurantService" --> "PriceCategory" : use as priceCategory
+"RestaurantService" --> "Restaurant" : use
+"RestaurantService" --> "RestaurantRepository" : restaurantRepository
 
 @enduml
