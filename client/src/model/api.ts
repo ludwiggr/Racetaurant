@@ -1,0 +1,63 @@
+import axios from "axios";
+import Cuisine from "./cuisine";
+import PriceCategory from "./priceCategory";
+import Restaurant, { isRestaurant, isRestaurantArray } from "./restaurant";
+
+export type FilterOptions = {
+    price?: PriceCategory,
+    latitude?: number,
+    longitude?: number,
+    radius?: number,
+    cuisines?: Array<Cuisine>,
+    rating_min?: number,
+    rating_max?: number,
+    time_start?: Date,
+    time_stop?: Date,
+    persons?: number,
+}
+
+export type APIError = {
+    message: string,
+    supplemental?: any
+}
+
+export const isAPIError = (apiError: any): apiError is APIError => {
+    return (typeof apiError === "object") && (typeof apiError.message === "string");
+}
+
+const axios_catch = (reject: (error: any) => void) => (error: any) => {
+    reject({
+        message: "API request failed",
+        supplemental: error
+    });
+};
+
+const getRestaurants = (filter?: FilterOptions, start?: number, limit?: number, order?: "id" | "name" | "rating", asc?: boolean): Promise<Array<Restaurant>> => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/restaurants", {
+            params: { ...filter, start: start, limit: limit, order: order, asc: asc }
+        }).then(result => {
+            if (isRestaurantArray(result.data))
+                resolve(result.data);
+            reject({
+                message: "API did not return an array of restaurants",
+                supplemental: result.data
+            });
+        }).catch(axios_catch(reject));
+    });
+}
+
+const getRestaurantById = (id: string): Promise<Restaurant> => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/restaurants/${encodeURIComponent(id)}`).then(result => {
+            if (isRestaurant(result.data))
+                resolve(result.data);
+            reject({
+                message: "API did not return a restaurant",
+                supplemental: result.data
+            });
+        }).catch(axios_catch(reject));
+    });
+}
+
+export { getRestaurants, getRestaurantById };
