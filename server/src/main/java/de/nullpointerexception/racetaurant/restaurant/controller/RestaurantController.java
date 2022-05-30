@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@RestController @RequestMapping("restaurants") @Validated public class RestaurantController {
+@RestController @RequestMapping("/api/restaurants") @Validated public class RestaurantController {
 	private final RestaurantService service;
 
 	RestaurantController(RestaurantService service) {
