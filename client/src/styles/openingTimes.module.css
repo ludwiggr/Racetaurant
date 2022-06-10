@@ -1,0 +1,6 @@
+.container {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 1px 12px;
+    align-items: stretch;
+}
