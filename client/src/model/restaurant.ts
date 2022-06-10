@@ -4,6 +4,9 @@ import OpeningTimes, { isOpeningTimes } from "./openingTimes";
 import PriceCategory, { isPriceCategory } from "./priceCategory";
 import RestaurantLayout, { isRestaurantLayout } from "./restaurantLayout";
 
+/**
+ * A Restaurant with the affiliated information
+ */
 class Restaurant {
     id: string;
     name: string;
@@ -45,6 +48,11 @@ class Restaurant {
 
 export default Restaurant;
 
+/**
+ * Checks if an object is a {@link Restaurant}
+ * @param restaurant the object to check
+ * @returns `true` if the given value is a {@link Restaurant}, `false` otherwise
+ */
 export const isRestaurant = (restaurant: any): restaurant is Restaurant => {
     return (typeof restaurant === "object") && //
         (typeof restaurant.id === "string") && //
@@ -59,6 +67,11 @@ export const isRestaurant = (restaurant: any): restaurant is Restaurant => {
         (isOpeningTimes(restaurant.open));
 };
 
+/**
+ * Checks if an object is an array of {@link Restaurant}s
+ * @param restaruants the object to check
+ * @returns `true` if the given value is an array of {@link Restaurant}s, `false` otherwise
+ */
 export const isRestaurantArray = (restaurants: any): restaurants is Array<Restaurant> => {
     return (Array.isArray(restaurants)) && ((restaurants).every(isRestaurant));
 }
