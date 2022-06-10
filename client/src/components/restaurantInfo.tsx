@@ -5,7 +5,7 @@ import styles from '../styles/restaurantInfo.module.css'
 import PriceCategory from './priceCategory';
 
 
-export class RestaurantInfo extends Component<{ restaurant: Restaurant }, {}>{
+export class RestaurantInfo extends Component<{ restaurant: Restaurant, onClick?: VoidFunction }, {}>{
     render() {
         const restaurant = this.props.restaurant;
         return (
@@ -31,7 +31,7 @@ export class RestaurantInfo extends Component<{ restaurant: Restaurant }, {}>{
                         {restaurant.images.length > 0 && <img className={styles.image} src={restaurant.images[0]} />}
                     </div>
 
-                    <Button style={{ marginTop: '8px' }} variant="contained" color='primary' fullWidth>see more details</Button>
+                    <Button style={{ marginTop: '8px' }} variant="contained" color='primary' fullWidth onClick={this.props.onClick}>see more details</Button>
 
                 </div>
                 {/*Hintergrund*/}
