@@ -2,6 +2,7 @@ import axios from "axios";
 import Cuisine from "./cuisine";
 import PriceCategory from "./priceCategory";
 import Restaurant, { isRestaurant, isRestaurantArray } from "./restaurant";
+import Review, { isReviewArray } from "./review";
 
 export type FilterOptions = {
     price?: PriceCategory,
@@ -60,4 +61,17 @@ const getRestaurantById = (id: string): Promise<Restaurant> => {
     });
 }
 
-export { getRestaurants, getRestaurantById };
+const getReviews = (id: string): Promise<Array<Review>> => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/restaurants/${encodeURIComponent(id)}/reviews`).then(result => {
+            if (isReviewArray(result.data))
+                resolve(result.data);
+            reject({
+                message: "API did not return an array of reviews",
+                supplemental: result.data
+            });
+        }).catch(axios_catch(reject));
+    })
+}
+
+export { getRestaurants, getRestaurantById, getReviews };
