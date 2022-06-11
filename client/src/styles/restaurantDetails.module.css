@@ -1,0 +1,57 @@
+.grid {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    grid-template-rows: max-content 1fr;
+    gap: 4px 4px;
+    grid-template-areas:
+        ". ."
+        ". .";
+    align-items: stretch;
+}
+
+.price-rating {
+    align-self: center;
+}
+
+.container {
+    padding: 8px;
+    max-width: 50vw;
+}
+
+.container>* {
+    margin: 8px;
+    gap: 8px;
+}
+
+.images {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 4px;
+    border-radius: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.images-container {
+    position: relative;
+    height: 150px;
+}
+
+.reviews-container {
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.reviews-container>* {
+    margin: 8px 0px;
+    padding: 4px;
+}
+
+.default-container {
+    padding: 4px 8px;
+}

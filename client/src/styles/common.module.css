@@ -1,0 +1,11 @@
+.left-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.restaurant-name-overflow {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
