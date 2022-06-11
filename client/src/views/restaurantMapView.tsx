@@ -29,6 +29,7 @@ export class RestaurantMapView extends React.Component<{}, {
 
         this.updateSidebarWidth = this.updateSidebarWidth.bind(this);
         this.updateRestaurants = this.updateRestaurants.bind(this);
+        this.closeFilters = this.closeFilters.bind(this);
     }
 
     componentDidMount() {
@@ -54,6 +55,11 @@ export class RestaurantMapView extends React.Component<{}, {
         getRestaurants(this.state.filter).then(restaurants => this.setState({ restaurants: restaurants }));
     }
 
+    closeFilters() {
+        this.setState({ showFilter: false });
+        this.updateRestaurants();
+    }
+
     render() {
         return (
             <div style={{ height: '100%' }}>
@@ -71,9 +77,9 @@ export class RestaurantMapView extends React.Component<{}, {
                     )}
                 </Paper>
                 {this.state.showFilter &&
-                    <div onClick={() => { this.setState({ showFilter: false }); this.updateRestaurants(); }} className={styles['popup-backdrop']}>
+                    <div onClick={this.closeFilters} className={styles['popup-backdrop']}>
                         <Paper onClick={e => e.stopPropagation()} elevation={15} className={styles['popup-container']}>
-                            <Filter filter={this.state.filter} setFilter={(filter) => this.setState({ filter: filter })} />
+                            <Filter filter={this.state.filter} setFilter={(filter) => this.setState({ filter: filter })} onClose={this.closeFilters} />
                         </Paper>
                     </div>
                 }
