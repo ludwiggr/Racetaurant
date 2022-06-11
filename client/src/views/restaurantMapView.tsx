@@ -71,15 +71,15 @@ export class RestaurantMapView extends React.Component<{}, {
                     )}
                 </Paper>
                 {this.state.showFilter &&
-                    <div onClick={() => { this.setState({ showFilter: false }); this.updateRestaurants(); }} className={styles['filter-backdrop']}>
-                        <Paper onClick={e => e.stopPropagation()} elevation={15} className={styles['filter-container']}>
+                    <div onClick={() => { this.setState({ showFilter: false }); this.updateRestaurants(); }} className={styles['popup-backdrop']}>
+                        <Paper onClick={e => e.stopPropagation()} elevation={15} className={styles['popup-container']}>
                             <Filter filter={this.state.filter} setFilter={(filter) => this.setState({ filter: filter })} />
                         </Paper>
                     </div>
                 }
                 {this.state.detailsRestaurant &&
-                    <div onClick={() => this.setState({ detailsRestaurant: undefined })} className={styles['filter-backdrop']}>
-                        <Paper onClick={e => e.stopPropagation()} elevation={15} className={styles['filter-container']}>
+                    <div onClick={() => this.setState({ detailsRestaurant: undefined })} className={styles['popup-backdrop']}>
+                        <Paper onClick={e => e.stopPropagation()} elevation={15} className={styles['popup-container']}>
                             <RestaurantDetails restaurant={this.state.detailsRestaurant} onClose={() => this.setState({ detailsRestaurant: undefined })} />
                         </Paper>
                     </div>
