@@ -2,6 +2,11 @@ import axios from "axios";
 import Cuisine from "./cuisine";
 import PriceCategory from "./priceCategory";
 import Restaurant, { isRestaurant, isRestaurantArray } from "./restaurant";
+import qs from 'qs';
+
+axios.defaults.paramsSerializer = params => {
+    return qs.stringify(params, { arrayFormat: 'repeat', /* param = [value1, value2] -> param=value1&param=value2 */ });
+};
 
 export type FilterOptions = {
     price?: PriceCategory,
