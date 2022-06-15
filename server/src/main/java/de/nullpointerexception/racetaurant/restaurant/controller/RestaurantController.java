@@ -5,7 +5,6 @@ import de.nullpointerexception.racetaurant.restaurant.model.Cuisine;
 import de.nullpointerexception.racetaurant.restaurant.model.Order;
 import de.nullpointerexception.racetaurant.restaurant.model.PriceCategory;
 import de.nullpointerexception.racetaurant.restaurant.model.Restaurant;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@RestController @RequestMapping("/api/restaurants") @Validated public class RestaurantController {
+@RestController @RequestMapping("/api/restaurants") @Validated @CrossOrigin public class RestaurantController {
 	private final RestaurantService service;
 
 	RestaurantController(RestaurantService service) {
