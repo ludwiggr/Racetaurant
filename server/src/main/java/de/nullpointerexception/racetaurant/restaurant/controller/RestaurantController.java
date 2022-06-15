@@ -5,6 +5,8 @@ import de.nullpointerexception.racetaurant.restaurant.model.Cuisine;
 import de.nullpointerexception.racetaurant.restaurant.model.Order;
 import de.nullpointerexception.racetaurant.restaurant.model.PriceCategory;
 import de.nullpointerexception.racetaurant.restaurant.model.Restaurant;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +36,8 @@ import java.util.UUID;
 			@Min(value = 0, message = "The minimum rating_max is 0.") @Max(value = 5, message = "The maximum rating_max is 5.") @RequestParam(name = "rating_max", required = false)  Double ratingMax,
 			@Min(value = 1, message = "The minimum value for persons is 1.") @RequestParam(name = "persons", required = false) Integer persons,
 			@RequestParam(name = "order", required = false) Order order,
-			@RequestParam(name = "time_start", required = false) LocalDateTime timeStart,
-			@RequestParam(name = "time_stop", required = false) LocalDateTime timeStop,
+			@RequestParam(name = "time_start", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
+			@RequestParam(name = "time_stop", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStop,
 			@RequestParam(name = "asc", required = false) boolean ascending
 			// @formatter:on
 	) {
