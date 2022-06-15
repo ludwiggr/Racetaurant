@@ -6,26 +6,40 @@ import javax.persistence.*;
 public class OpeningTimes {
 	private static final String CLOSED = "closed";
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "MONDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "MONDAY_TO")), }) @Embedded private OpeningTime monday;
+	@AttributeOverride(name = "from", column = @Column(name = "MONDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "MONDAY_TO"))
+	@Embedded
+	private OpeningTime monday;
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "TUESDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "TUESDAY_TO")), }) @Embedded private OpeningTime tuesday;
+	@AttributeOverride(name = "from", column = @Column(name = "TUESDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "TUESDAY_TO"))
+	@Embedded
+	private OpeningTime tuesday;
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "WEDNESDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "WEDNESDAY_TO")), }) @Embedded private OpeningTime wednesday;
+	@AttributeOverride(name = "from", column = @Column(name = "WEDNESDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "WEDNESDAY_TO"))
+	@Embedded
+	private OpeningTime wednesday;
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "THURSDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "THURSDAY_TO")), }) @Embedded private OpeningTime thursday;
+	@AttributeOverride(name = "from", column = @Column(name = "THURSDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "THURSDAY_TO"))
+	@Embedded
+	private OpeningTime thursday;
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "FRIDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "FRIDAY_TO")), }) @Embedded private OpeningTime friday;
+	@AttributeOverride(name = "from", column = @Column(name = "FRIDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "FRIDAY_TO"))
+	@Embedded
+	private OpeningTime friday;
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "SATURDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "SATURDAY_TO")), }) @Embedded private OpeningTime saturday;
+	@AttributeOverride(name = "from", column = @Column(name = "SATURDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "SATURDAY_TO"))
+	@Embedded
+	private OpeningTime saturday;
 
-	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "SUNDAY_FROM")),
-			@AttributeOverride(name = "to", column = @Column(name = "SUNDAY_TO")), }) @Embedded private OpeningTime sunday;
+	@AttributeOverride(name = "from", column = @Column(name = "SUNDAY_FROM"))
+	@AttributeOverride(name = "to", column = @Column(name = "SUNDAY_TO"))
+	@Embedded
+	private OpeningTime sunday;
 
 	public OpeningTimes() {
 		setMonday(null);
