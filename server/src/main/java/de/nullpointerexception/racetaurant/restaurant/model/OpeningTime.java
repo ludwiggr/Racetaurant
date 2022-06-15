@@ -16,7 +16,7 @@ import javax.validation.constraints.Pattern;
 		this.to = CLOSED;
 	}
 
-	public OpeningTime(String from, String closed) {
+	public OpeningTime(String from, String to) {
 		setFrom(from);
 		setTo(to);
 	}
