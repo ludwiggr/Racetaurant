@@ -20,9 +20,9 @@ import java.util.UUID;
 	@NotNull private PriceCategory priceCategory;
 
 	@NotNull @ElementCollection(targetClass = Cuisine.class) @JoinTable(name = "restaurantsCuisines", joinColumns = @JoinColumn(name = "id")) @Column(name = "cuisine", nullable = false) @Enumerated(EnumType.STRING) private List<Cuisine> cuisines;
-	@NotNull @OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "locationId", referencedColumnName = "id") private Location location;
-	@NotNull @OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "layoutId", referencedColumnName = "id") private RestaurantLayout layout;
-	@NotNull @OneToOne(optional = false, cascade = CascadeType.ALL) @JoinColumn(name = "openingTimesId", referencedColumnName = "id") private OpeningTimes open;
+	@NotNull @Embedded private Location location;
+	@NotNull @Embedded private RestaurantLayout layout;
+	@NotNull @Embedded private OpeningTimes open;
 
 	protected Restaurant() {
 

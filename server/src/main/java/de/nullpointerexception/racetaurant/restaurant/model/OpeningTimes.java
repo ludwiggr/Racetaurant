@@ -2,8 +2,8 @@ package de.nullpointerexception.racetaurant.restaurant.model;
 
 import javax.persistence.*;
 
-@Entity @Table(name = "restaurantsOpeningTimes") public class OpeningTimes {
-	@Id @GeneratedValue private Long id;
+@Embeddable
+public class OpeningTimes {
 	private static final String CLOSED = "closed";
 
 	@AttributeOverrides({ @AttributeOverride(name = "from", column = @Column(name = "MONDAY_FROM")),
@@ -46,10 +46,6 @@ import javax.persistence.*;
 		setFriday(friday);
 		setSaturday(saturday);
 		setSunday(sunday);
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public OpeningTime getMonday() {
