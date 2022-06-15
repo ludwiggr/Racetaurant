@@ -1,8 +1,12 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashMap;
+import java.util.Objects;
 
 @Embeddable public class OpeningTime {
 	private static final String CLOSED = "closed";
@@ -45,5 +49,16 @@ import javax.validation.constraints.Pattern;
 
 	public String getTo() {
 		return to;
+	}
+
+	@JsonValue public Object getJSONValue() {
+		if (Objects.equals(from, CLOSED) || Objects.equals(to, CLOSED)) {
+			return "closed";
+		} else {
+			HashMap<String, String> result = new HashMap<>();
+			result.put("from", this.from);
+			result.put("to", this.to);
+			return result;
+		}
 	}
 }
