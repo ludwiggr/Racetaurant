@@ -11,8 +11,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,36 +63,32 @@ import java.util.UUID;
 		boolean cuisineFilter = requiredCuisines != null;
 		boolean ratingMinFilter = ratingMin != null;
 		boolean ratingMaxFilter = ratingMax != null;
-		boolean openingTimesFilter = timeStart != null && timeStop != null;
-		boolean personsFilter = persons != null;
+		boolean freeTableFilter = timeStart != null && timeStop != null && persons != null;
 
-		if (openingTimesFilter) {
-			// TODO: Implement opening times filter
+		List<Predicate> filters = new ArrayList<Predicate>();
+
+		if (freeTableFilter) {
+			// TODO: Implement free table filter
 		}
-
-		if (personsFilter) {
-			// TODO: Implement persons filter
-		}
-
+		
 		// Filter by price category
 		if (priceCategoryFilter) {
-			cq.where(cb.equal(root.get("priceCategory"), priceCategory));
+			filters.add(cb.equal(root.get("priceCategory"), priceCategory));
 		}
 
 		// Filter by minimum rating
 		if (ratingMinFilter) {
-			cq.where(cb.greaterThanOrEqualTo(root.get("rating"), ratingMin));
+			filters.add(cb.greaterThanOrEqualTo(root.get("rating"), ratingMin));
 		}
-
 		// Filter by maximum rating
 		if (ratingMaxFilter) {
-			cq.where(cb.lessThanOrEqualTo(root.get("rating"), ratingMax));
+			filters.add(cb.lessThanOrEqualTo(root.get("rating"), ratingMax));
 		}
 
 		// Filter by distance
 		// @formatter:off
 		if(locationFilter){
-			cq.where(cb.lessThan(cb.prod(
+			filters.add(cb.lessThan(cb.prod(
 					6371.0,
 					cb.function(
 							"ACOS",
@@ -117,6 +115,7 @@ import java.util.UUID;
 			), cb.parameter(Double.class, "radius")));
 		}
 		// @formatter:on
+		cq.where(filters.toArray(new Predicate[0]));
 
 		// Sort (default is descending by id)
 		ascending = ascending != null && ascending;
