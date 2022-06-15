@@ -1,15 +1,12 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Entity @Table(name = "restaurantsLocation") public class Location {
-	@Id @GeneratedValue private Long id;
+@Embeddable
+public class Location {
 
 	@NotNull @Min(value = -90, message = "A location's minimum latitude is -90.") @Max(value = 90, message = "A location's maximum latitude is 90.") private double latitude;
 
@@ -51,7 +48,4 @@ import javax.validation.constraints.NotNull;
 		this.address = address;
 	}
 
-	public Long getId() {
-		return id;
-	}
 }

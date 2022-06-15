@@ -1,18 +1,12 @@
 package de.nullpointerexception.racetaurant.restaurant.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 
-@Entity @Table(name = "restaurantsLayout") public class RestaurantLayout {
-	@Id @GeneratedValue private Long id;
+@Embeddable
+public class RestaurantLayout {
 
 	public RestaurantLayout() {
 
 	}
 
-	public Long getId() {
-		return id;
-	}
 }
