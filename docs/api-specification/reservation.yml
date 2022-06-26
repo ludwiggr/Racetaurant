@@ -5,8 +5,7 @@ ReservationRequest:
       description: The id's of the reserved tables
       type: array
       items:
-        type: string
-        example: "98c8a84e-db82-13da-76a0-8872ac290012"
+        $ref: "./uuid.yml#/UUID"
       minItems: 1
     time_start:
       description: The ISO 8601 timestamp when the reservations starts

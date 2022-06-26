@@ -9,8 +9,7 @@ Table:
       enum: [table]
     id:
       description: The table's unique UUID
-      type: string
-      example: "44c8a84e-ebe5-11ec-8ea0-0242ac120002"
+      $ref: "./uuid.yml#/UUID"
     places:
       description: The amount of places the table offers
       type: number
@@ -121,7 +120,7 @@ StaticRestaurantObjectType:
   enum: [bar, toilets, entrance, door]
 DynamicRestaurantObjectType:
   type: string
-  enum: [staircase, table, colored-shape, text]
+  enum: [staircase, table, colored-shape, text, image]
 StaticRestaurantObject:
   description: Represents a common object consisting of a shape and a type
   type: object
@@ -160,7 +159,7 @@ RestaurantLayout:
             example: "Ground Floor"
           bounds:
             description: The floor's bounds. All objects are inside the floor's bounds.
-            $ref: "./shapes.yml#/Rectangle"
+            $ref: "./shapes.yml#/Shape"
           objects:
             description: The floor's objects (tables, doors, toilets, etc)
             type: array

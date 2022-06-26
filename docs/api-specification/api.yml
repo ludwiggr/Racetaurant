@@ -119,7 +119,6 @@ paths:
           $ref: "./uuid.yml#/UUID"
         required: true
         description: ID of the restaurant to get
-        example: "44c8a84e-ebe5-11ec-8ea0-0242ac120002"
     get:
       description: Get detailed information about a single restaurant
       responses:
@@ -139,7 +138,6 @@ paths:
           $ref: "./uuid.yml#/UUID"
         required: true
         description: The restaurant's id
-        example: "44c8a84e-ebe5-11ec-8ea0-0242ac120002"
       - in: query
         name: start
         schema:
@@ -177,7 +175,6 @@ paths:
           $ref: "./uuid.yml#/UUID"
         required: true
         description: The id of the requested layout's restaurant
-        example: "44c8a84e-ebe5-11ec-8ea0-0242ac120002"
       - in: query
         name: object-types
         required: false
@@ -195,6 +192,8 @@ paths:
             application/json:
               schema:
                 $ref: "./restaurant-layout.yml#/RestaurantLayout"
+        "404":
+          description: The requested restaurant does not exist
   /restaurants/{restaurantId}/reservations:
     parameters:
       - in: path
@@ -213,7 +212,9 @@ paths:
       responses:
         "201":
           description: The reservation was successfull
-        "401":
+        "404":
+          description: The requested restaurant does not exist
+        "422":
           description: The reservation failed
     get:
       description: "Get a restaurant's table reservations (inside the specified interval)"
@@ -235,3 +236,5 @@ paths:
             application/json:
               schema:
                 $ref: "./reservation.yml#/RestaurantTableReservations"
+        "404":
+          description: The requested restaurant does not exist
