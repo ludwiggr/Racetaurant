@@ -3,11 +3,12 @@ package de.nullpointerexception.racetaurant.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity @Inheritance(strategy = InheritanceType.JOINED) public abstract class Shape {
 	@Id @GeneratedValue @JsonIgnore private Long id;
 
-	private ShapeType type;
+	@NotNull private ShapeType type;
 
 	public Shape(ShapeType type) {
 		this.type = type;
