@@ -1,20 +1,33 @@
 package de.nullpointerexception.racetaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
-@Entity public class RestaurantLayout {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", insertable = false, updatable = false, nullable = false) @JsonIgnore private UUID id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-	@NotNull @OneToMany(cascade = CascadeType.ALL) private List<Floor> floors;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	@NotNull @OneToOne(cascade = CascadeType.MERGE) @JoinColumn(name = "restaurantId", referencedColumnName = "id") @JsonIgnore private Restaurant restaurant;
+@Entity
+public class RestaurantLayout {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", insertable = false, updatable = false, nullable = false)
+	@JsonIgnore
+	private UUID id;
 
-	@NotNull private int defaultFloor;
+	@NotNull
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Floor> floors;
+
+	@NotNull
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "restaurantId", referencedColumnName = "id")
+	@JsonIgnore
+	private Restaurant restaurant;
+
+	@NotNull
+	private int defaultFloor;
 
 	public RestaurantLayout(List<Floor> floors, Restaurant restaurant, int defaultFloor) {
 		this.floors = floors;

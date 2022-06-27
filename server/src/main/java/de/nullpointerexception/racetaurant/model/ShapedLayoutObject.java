@@ -6,8 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-@Entity @DiscriminatorValue("shaped-layout-object") public class ShapedLayoutObject extends StaticLayoutObject {
-	@OneToOne(cascade = CascadeType.ALL) @NotNull private Shape shape;
+@Entity
+@DiscriminatorValue("shaped-layout-object")
+public class ShapedLayoutObject extends StaticLayoutObject {
+	@OneToOne(cascade = CascadeType.ALL)
+	@NotNull
+	private Shape shape;
 
 	public ShapedLayoutObject(Shape shape, LayoutObjectType type) {
 		super(type);

@@ -1,15 +1,20 @@
 package de.nullpointerexception.racetaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.UUID;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
-@Entity @DiscriminatorValue("restaurant") public class RestaurantTable extends ShapedLayoutObject {
-	@NotNull @Min(1) private int places;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@DiscriminatorValue("restaurant")
+public class RestaurantTable extends ShapedLayoutObject {
+	@NotNull
+	@Min(1)
+	private int places;
 
 	public RestaurantTable(Shape shape, int places) {
 		super(shape, LayoutObjectType.TABLE);
@@ -28,7 +33,9 @@ import java.util.UUID;
 		return places;
 	}
 
-	@JsonIgnore(false) @Override public UUID getId() {
+	@JsonIgnore(false)
+	@Override
+	public UUID getId() {
 		return super.getId();
 	}
 }

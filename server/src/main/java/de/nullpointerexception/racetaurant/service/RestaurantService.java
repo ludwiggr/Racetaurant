@@ -1,11 +1,10 @@
 package de.nullpointerexception.racetaurant.service;
 
-import de.nullpointerexception.racetaurant.model.Cuisine;
-import de.nullpointerexception.racetaurant.model.Order;
-import de.nullpointerexception.racetaurant.model.PriceCategory;
-import de.nullpointerexception.racetaurant.model.Restaurant;
-import de.nullpointerexception.racetaurant.repository.RestaurantRepository;
-import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,38 +13,48 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-@Service public class RestaurantService {
+import org.springframework.stereotype.Service;
+
+import de.nullpointerexception.racetaurant.model.Cuisine;
+import de.nullpointerexception.racetaurant.model.Order;
+import de.nullpointerexception.racetaurant.model.PriceCategory;
+import de.nullpointerexception.racetaurant.model.Restaurant;
+import de.nullpointerexception.racetaurant.repository.RestaurantRepository;
+
+@Service
+public class RestaurantService {
 	private final RestaurantRepository restaurantRepository;
 
-	@PersistenceContext public EntityManager em;
+	@PersistenceContext
+	public EntityManager em;
 
 	public RestaurantService(RestaurantRepository restaurantRepository) {
 		this.restaurantRepository = restaurantRepository;
 	}
 
 	/**
-	 * Gets all restaurants stored in the database meeting the passed filters.
-	 * All parameters are optional (just pass <code>null</code>). Some parameters
-	 * take default values if they are <code>null</code>.
+	 * Gets all restaurants stored in the database meeting the passed filters. All
+	 * parameters are optional (just pass <code>null</code>). Some parameters take
+	 * default values if they are <code>null</code>.
 	 *
 	 * @param start            the amount of restaurants to skip (default value: 0)
-	 * @param limit            the maximum amount of restaurants to return (default value: 50)
+	 * @param limit            the maximum amount of restaurants to return (default
+	 *                         value: 50)
 	 * @param priceCategory    the required price category
 	 * @param latitude         the target's latitude
 	 * @param longitude        the target's longitude
-	 * @param radius           the maximum restaurant distance (in kilometres) from the target position (default: <code>1km</code>)
+	 * @param radius           the maximum restaurant distance (in kilometres) from
+	 *                         the target position (default: <code>1km</code>)
 	 * @param requiredCuisines the cuisines the restaurant has to offer
 	 * @param ratingMin        the restaurant's minimum average rating
 	 * @param ratingMax        the restaurant's maximum average rating
-	 * @param timeStart        the ISO 8601 timestamp from when a free table should be available
-	 * @param timeStop         the ISO 8601 timestamp until when a free table should be available
-	 * @param persons          the minimum amount of free places a free table of the restaurant has to offer in the given time interval
+	 * @param timeStart        the ISO 8601 timestamp from when a free table should
+	 *                         be available
+	 * @param timeStop         the ISO 8601 timestamp until when a free table should
+	 *                         be available
+	 * @param persons          the minimum amount of free places a free table of the
+	 *                         restaurant has to offer in the given time interval
 	 * @param order            the attribute to sort by
 	 * @param ascending        whether to sort ascending (default: false)
 	 * @return all restaurants stored in the database meeting the passed filters

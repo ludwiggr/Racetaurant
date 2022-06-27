@@ -4,12 +4,20 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Entity public class Rectangle extends Shape {
-	@NotNull private double x;
-	@NotNull private double y;
-	@NotNull @Min(0) private double width;
-	@NotNull @Min(0) private double height;
-	@NotNull private double rotation;
+@Entity
+public class Rectangle extends Shape {
+	@NotNull
+	private double x;
+	@NotNull
+	private double y;
+	@NotNull
+	@Min(0)
+	private double width;
+	@NotNull
+	@Min(0)
+	private double height;
+	@NotNull
+	private double rotation;
 
 	public Rectangle(double x, double y, double width, double height, double rotation) {
 		super(ShapeType.rectangle);
@@ -64,7 +72,8 @@ import javax.validation.constraints.NotNull;
 		this.rotation = rotation;
 	}
 
-	@Override public Rectangle clone() {
+	@Override
+	public Rectangle clone() {
 		return new Rectangle(x, y, width, height, rotation);
 	}
 }

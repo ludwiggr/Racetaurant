@@ -3,9 +3,12 @@ package de.nullpointerexception.racetaurant.model;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
-@Embeddable public class Point2D {
-	@NotNull private double x;
-	@NotNull private double y;
+@Embeddable
+public class Point2D {
+	@NotNull
+	private double x;
+	@NotNull
+	private double y;
 
 	public Point2D(double x, double y) {
 		this.x = x;

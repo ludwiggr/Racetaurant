@@ -1,27 +1,53 @@
 package de.nullpointerexception.racetaurant.model;
 
-import org.hibernate.validator.constraints.URL;
+import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
-import java.util.UUID;
 
-@Entity @Table(name = "restaurants") public class Restaurant {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", insertable = false, updatable = false, nullable = false) private UUID id;
-	@NotNull private String name;
-	@NotNull @URL private String website;
-	@NotNull @Min(value = 0, message = "The minimum average rating is 0.") @Max(value = 5, message = "The maximum average rating is 5.") private double rating;
-	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "imageId") @NotNull @Size(min = 1, message = "At least one image per restaurant is required.") private List<RestaurantImage> images;
+import org.hibernate.validator.constraints.URL;
 
-	@NotNull private PriceCategory priceCategory;
+@Entity
+@Table(name = "restaurants")
+public class Restaurant {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", insertable = false, updatable = false, nullable = false)
+	private UUID id;
+	@NotNull
+	private String name;
+	@NotNull
+	@URL
+	private String website;
+	@NotNull
+	@Min(value = 0, message = "The minimum average rating is 0.")
+	@Max(value = 5, message = "The maximum average rating is 5.")
+	private double rating;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "imageId")
+	@NotNull
+	@Size(min = 1, message = "At least one image per restaurant is required.")
+	private List<RestaurantImage> images;
 
-	@NotNull @ElementCollection(targetClass = Cuisine.class) @JoinTable(name = "restaurantsCuisines", joinColumns = @JoinColumn(name = "id")) @Column(name = "cuisine", nullable = false) @Enumerated(EnumType.STRING) private List<Cuisine> cuisines;
-	@NotNull @Embedded private Location location;
-	@NotNull @Embedded private OpeningTimes open;
+	@NotNull
+	private PriceCategory priceCategory;
+
+	@NotNull
+	@ElementCollection(targetClass = Cuisine.class)
+	@JoinTable(name = "restaurantsCuisines", joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "cuisine", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private List<Cuisine> cuisines;
+	@NotNull
+	@Embedded
+	private Location location;
+	@NotNull
+	@Embedded
+	private OpeningTimes open;
 
 	protected Restaurant() {
 

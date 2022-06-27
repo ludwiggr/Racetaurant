@@ -5,13 +5,21 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Embeddable public class Location {
+@Embeddable
+public class Location {
 
-	@NotNull @Min(value = -90, message = "A location's minimum latitude is -90.") @Max(value = 90, message = "A location's maximum latitude is 90.") private double latitude;
+	@NotNull
+	@Min(value = -90, message = "A location's minimum latitude is -90.")
+	@Max(value = 90, message = "A location's maximum latitude is 90.")
+	private double latitude;
 
-	@NotNull @Min(value = -90, message = "A location's minimum longitude is -90.") @Max(value = 90, message = "A location's maximum longitude is 90.") private double longitude;
+	@NotNull
+	@Min(value = -90, message = "A location's minimum longitude is -90.")
+	@Max(value = 90, message = "A location's maximum longitude is 90.")
+	private double longitude;
 
-	@NotNull private String address;
+	@NotNull
+	private String address;
 
 	protected Location() {
 

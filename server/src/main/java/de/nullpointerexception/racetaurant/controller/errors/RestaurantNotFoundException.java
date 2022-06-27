@@ -1,9 +1,9 @@
 package de.nullpointerexception.racetaurant.controller.errors;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.UUID;
 
 public class RestaurantNotFoundException extends ResponseStatusException {
 	public RestaurantNotFoundException(UUID id, HttpStatus status) {

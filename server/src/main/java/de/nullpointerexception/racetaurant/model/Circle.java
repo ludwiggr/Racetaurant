@@ -4,10 +4,15 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-@Entity @DiscriminatorValue("circle") public class Circle extends Shape {
-	@NotNull private double x;
-	@NotNull private double y;
-	@NotNull private double radius;
+@Entity
+@DiscriminatorValue("circle")
+public class Circle extends Shape {
+	@NotNull
+	private double x;
+	@NotNull
+	private double y;
+	@NotNull
+	private double radius;
 
 	public Circle(double x, double y, double radius) {
 		super(ShapeType.circle);
@@ -44,7 +49,8 @@ import javax.validation.constraints.NotNull;
 		this.radius = radius;
 	}
 
-	@Override public Circle clone() {
+	@Override
+	public Circle clone() {
 		return new Circle(x, y, radius);
 	}
 }

@@ -1,9 +1,7 @@
 package de.nullpointerexception.racetaurant;
 
-import de.nullpointerexception.racetaurant.model.*;
-import de.nullpointerexception.racetaurant.repository.RestaurantLayoutRepository;
-import de.nullpointerexception.racetaurant.repository.RestaurantRepository;
-import de.nullpointerexception.racetaurant.samples.RestaurantLayoutFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,21 +9,28 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 
-import java.util.List;
+import de.nullpointerexception.racetaurant.model.*;
+import de.nullpointerexception.racetaurant.repository.RestaurantLayoutRepository;
+import de.nullpointerexception.racetaurant.repository.RestaurantRepository;
+import de.nullpointerexception.racetaurant.samples.RestaurantLayoutFactory;
 
-@SpringBootApplication public class RacetaurantApplication {
+@SpringBootApplication
+public class RacetaurantApplication {
 
-	@Autowired private RestaurantRepository restaurantRepository;
-	@Autowired private RestaurantLayoutRepository restaurantLayoutRepository;
+	@Autowired
+	private RestaurantRepository restaurantRepository;
+	@Autowired
+	private RestaurantLayoutRepository restaurantLayoutRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RacetaurantApplication.class, args);
 	}
 
-	@Bean("restaurant-samples") CommandLineRunner insertRestaurantSamples() {
+	@Bean("restaurant-samples")
+	CommandLineRunner insertRestaurantSamples() {
 		return (args) -> {
 
-			//Opening Times
+			// Opening Times
 			OpeningTime t0 = new OpeningTime();
 			OpeningTime t1 = new OpeningTime("08:00", "16:00");
 			OpeningTime t2 = new OpeningTime("10:00", "20:00");
@@ -37,7 +42,7 @@ import java.util.List;
 			OpeningTimes openingTimes2 = new OpeningTimes(t0, t0, t0, t4, t4, t2, t2);
 			OpeningTimes openingTimes3 = new OpeningTimes(t4, t4, t4, t4, t3, t3, t3);
 
-			//American Restaurants -> 5
+			// American Restaurants -> 5
 			restaurantRepository.save(new Restaurant("Jones Original American Diner", "http://www.jones-diner.com", 4.6,
 					List.of(new RestaurantImage(
 							"https://as1.ftcdn.net/v2/jpg/02/10/97/64/1000_F_210976473_Ud6IViNN5QksXJJSBqNCWZ9loSR6bkvv.jpg")),
@@ -67,9 +72,9 @@ import java.util.List;
 					PriceCategory.CHEAP, List.of(Cuisine.AMERICAN),
 					new Location(48.137807, 11.564542, "Sonnenstraße 6, 80331 München"), openingTimes0));
 
-			//Asian Restaurants -> 5
-			restaurantRepository.save(
-					new Restaurant("Secret Garden Vegan Sushi München", "https://secretgarden-muenchen.com", 4.5,
+			// Asian Restaurants -> 5
+			restaurantRepository
+					.save(new Restaurant("Secret Garden Vegan Sushi München", "https://secretgarden-muenchen.com", 4.5,
 							List.of(new RestaurantImage(
 									"https://qul.imgix.net/b1c0bc85-9e67-4f4f-ae24-a8d9f130f9f2/582695_sld.jpg")),
 							PriceCategory.MEDIUM, List.of(Cuisine.ASIAN),
@@ -89,8 +94,9 @@ import java.util.List;
 
 			restaurantRepository.save(new Restaurant("Matsuhisa",
 					"https://www.mandarinoriental.com/munich/altstadt/fine-dining/restaurants/japanese-peruvian-cuisine/matsuhisa-munich?htl=MOMUC&kw=MOMUC_matsuhisa&eng=google&src=local",
-					4.6, List.of(new RestaurantImage(
-					"https://qul.imgix.net/b1c0bc85-9e67-4f4f-ae24-a8d9f130f9f2/582695_sld.jpg")),
+					4.6,
+					List.of(new RestaurantImage(
+							"https://qul.imgix.net/b1c0bc85-9e67-4f4f-ae24-a8d9f130f9f2/582695_sld.jpg")),
 					PriceCategory.EXPENSIVE, List.of(Cuisine.ASIAN),
 					new Location(48.13733, 11.58082, "Neuturmstraße 1, 80331 München"), openingTimes0));
 
@@ -100,7 +106,7 @@ import java.util.List;
 					PriceCategory.MEDIUM, List.of(Cuisine.ASIAN),
 					new Location(48.135956, 11.584270, "Kanalstraße 14, 80538 München"), openingTimes2));
 
-			//German Restaurants -> 5
+			// German Restaurants -> 5
 			restaurantRepository.save(new Restaurant("Klinglwirt", "https://www.klinglwirt.de", 3.9,
 					List.of(new RestaurantImage(
 							"https://templesandtreehouses.com/wp-content/uploads/2019/10/A-selection-of-traditional-German-dishes-including-pretzels-and-schitzel.jpg")),
@@ -113,12 +119,12 @@ import java.util.List;
 					PriceCategory.MEDIUM, List.of(Cuisine.GERMAN),
 					new Location(48.137535, 11.579385, "Orlandostraße 5, 80331 München"), openingTimes2));
 
-			restaurantRepository.save(
-					new Restaurant("Haxnbauer", "https://www.kuffler.de/de/restaurant/haxnbauer/", 3.6,
-							List.of(new RestaurantImage(
-									"https://templesandtreehouses.com/wp-content/uploads/2019/10/A-selection-of-traditional-German-dishes-including-pretzels-and-schitzel.jpg")),
-							PriceCategory.MEDIUM, List.of(Cuisine.GERMAN),
-							new Location(48.137509, 11.578455, "Sparkassenstraße 6, 80331 München"), openingTimes1));
+			restaurantRepository.save(new Restaurant("Haxnbauer", "https://www.kuffler.de/de/restaurant/haxnbauer/",
+					3.6,
+					List.of(new RestaurantImage(
+							"https://templesandtreehouses.com/wp-content/uploads/2019/10/A-selection-of-traditional-German-dishes-including-pretzels-and-schitzel.jpg")),
+					PriceCategory.MEDIUM, List.of(Cuisine.GERMAN),
+					new Location(48.137509, 11.578455, "Sparkassenstraße 6, 80331 München"), openingTimes1));
 
 			restaurantRepository.save(new Restaurant("Zum Dürnbräu", "https://www.zumduernbraeu.de", 3.5,
 					List.of(new RestaurantImage(
@@ -132,7 +138,7 @@ import java.util.List;
 					PriceCategory.MEDIUM, List.of(Cuisine.GERMAN),
 					new Location(48.126353, 11.568755, "Baumstraße 21, 80469 München"), openingTimes3));
 
-			//Italian Restaurants -> 5
+			// Italian Restaurants -> 5
 			restaurantRepository.save(new Restaurant("Ristorante Albarone Monaco", "https://wetter.de", 4.8,
 					List.of(new RestaurantImage(
 							"https://www.tastingtable.com/img/gallery/20-italian-dishes-you-need-to-try-at-least-once/l-intro-1643403830.jpg")),
@@ -163,7 +169,7 @@ import java.util.List;
 					PriceCategory.MEDIUM, List.of(Cuisine.ITALIAN),
 					new Location(48.136013, 11.576006, "Peterspl. 8, 80331 München"), openingTimes0));
 
-			//Balkan Restaurants -> 5
+			// Balkan Restaurants -> 5
 			restaurantRepository.save(new Restaurant("Sendlinger Treff", "http://www.sendlingertreff.de/menu/", 3.8,
 					List.of(new RestaurantImage(
 							"https://www.rakijagrill.com/wp-content/uploads/2019/11/shutterstock_1502599004-1.jpg")),
@@ -194,7 +200,7 @@ import java.util.List;
 					PriceCategory.CHEAP, List.of(Cuisine.BALKAN),
 					new Location(48.169754, 11.507017, "Franz-Mader-Straße 11, 80992 München"), openingTimes0));
 
-			//Greek Restaurants -> 5
+			// Greek Restaurants -> 5
 			restaurantRepository.save(new Restaurant("Piatsa", "https://restaurant-piatsa.de", 4.2,
 					List.of(new RestaurantImage(
 							"https://greecetravelideas.com/wp-content/uploads/2018/08/shutterstock_646209769-min.jpg")),
@@ -225,11 +231,12 @@ import java.util.List;
 					PriceCategory.CHEAP, List.of(Cuisine.GREEK),
 					new Location(48.158579, 11.575033, "Nordendstraße 60, 80801 München"), openingTimes1));
 
-			//Indian Restaurants -> 5
+			// Indian Restaurants -> 5
 			restaurantRepository.save(new Restaurant("Goa",
 					"https://restaurant-goa.hunger.de/8792?utm_source=google&utm_medium=mybusiness&utm_campaign=gb",
-					3.7, List.of(new RestaurantImage(
-					"https://www.halloessen.de/blog/wp-content/uploads/2020/10/shutterstock_649541308-1-scaled.jpg")),
+					3.7,
+					List.of(new RestaurantImage(
+							"https://www.halloessen.de/blog/wp-content/uploads/2020/10/shutterstock_649541308-1-scaled.jpg")),
 					PriceCategory.MEDIUM, List.of(Cuisine.INDIAN),
 					new Location(48.134075, 11.584215, "Thierschstraße 8, 80538 München"), openingTimes3));
 
@@ -257,7 +264,7 @@ import java.util.List;
 					PriceCategory.MEDIUM, List.of(Cuisine.INDIAN),
 					new Location(48.134597, 11.578123, "Frauenstraße 11, 80469 München"), openingTimes2));
 
-			//Turkish Restaurants -> 5
+			// Turkish Restaurants -> 5
 			restaurantRepository.save(new Restaurant("SILA", "http://www.silarestaurant.com", 3.7,
 					List.of(new RestaurantImage("https://www.melares.com/uploads/turkish-foods72022865.jpg")),
 					PriceCategory.CHEAP, List.of(Cuisine.TURKISH),
@@ -283,7 +290,7 @@ import java.util.List;
 					PriceCategory.MEDIUM, List.of(Cuisine.TURKISH),
 					new Location(48.133943, 11.541441, "Ligsalzstraße 46, 80339 München"), openingTimes2));
 
-			//Fusion Restaurants -> 10
+			// Fusion Restaurants -> 10
 			restaurantRepository.save(new Restaurant("Opatija", "https://www.opatija-restaurant.com", 4.5,
 					List.of(new RestaurantImage(
 							"https://media01.stockfood.com/largepreviews/NDE0MzcyOTA4/13366868-Verschiedene-Fusion-Food-Snacks.jpg")),
@@ -321,8 +328,9 @@ import java.util.List;
 
 			restaurantRepository.save(new Restaurant("La Barca",
 					"https://de-de.facebook.com/pages/category/Asian-Restaurant/La-Barca-Feinkost-473005759434202/",
-					3.7, List.of(new RestaurantImage(
-					"https://media01.stockfood.com/largepreviews/NDE0MzcyOTA4/13366868-Verschiedene-Fusion-Food-Snacks.jpg")),
+					3.7,
+					List.of(new RestaurantImage(
+							"https://media01.stockfood.com/largepreviews/NDE0MzcyOTA4/13366868-Verschiedene-Fusion-Food-Snacks.jpg")),
 					PriceCategory.CHEAP, List.of(Cuisine.ITALIAN, Cuisine.INDIAN, Cuisine.ASIAN),
 					new Location(48.14642, 11.631977, "Denninger Str. 170, 81927 München"), openingTimes2));
 
@@ -340,15 +348,18 @@ import java.util.List;
 
 			restaurantRepository.save(new Restaurant("HANS IM GLÜCK",
 					"https://hansimglueck-burgergrill.de/burger-restaurant/muenchen-isartor/?utm_source=google&utm_medium=yext&utm_campaign=10",
-					4.1, List.of(new RestaurantImage(
-					"https://media01.stockfood.com/largepreviews/NDE0MzcyOTA4/13366868-Verschiedene-Fusion-Food-Snacks.jpg")),
+					4.1,
+					List.of(new RestaurantImage(
+							"https://media01.stockfood.com/largepreviews/NDE0MzcyOTA4/13366868-Verschiedene-Fusion-Food-Snacks.jpg")),
 					PriceCategory.EXPENSIVE, List.of(Cuisine.GERMAN, Cuisine.AMERICAN),
 					new Location(48.13419, 11.582214, "Isartorpl. 8, 80331 München"), openingTimes0));
 
 		};
 	}
 
-	@Bean @DependsOn("restaurant-samples") public CommandLineRunner insertRestaurantLayouts() {
+	@Bean
+	@DependsOn("restaurant-samples")
+	public CommandLineRunner insertRestaurantLayouts() {
 		return (args) -> {
 			List<Restaurant> restaurants = restaurantRepository.findAll();
 			for (Restaurant restaurant : restaurants) {

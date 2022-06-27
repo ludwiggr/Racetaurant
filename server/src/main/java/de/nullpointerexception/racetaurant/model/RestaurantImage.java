@@ -1,19 +1,27 @@
 package de.nullpointerexception.racetaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
-import org.hibernate.validator.constraints.URL;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-@Entity public class RestaurantImage {
-	@Id @GeneratedValue @JsonIgnore private Long id;
+import org.hibernate.validator.constraints.URL;
 
-	@NotNull @Column(length = 400) @URL private String url;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+@Entity
+public class RestaurantImage {
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long id;
+
+	@NotNull
+	@Column(length = 400)
+	@URL
+	private String url;
 
 	protected RestaurantImage() {
 
@@ -23,7 +31,8 @@ import javax.validation.constraints.NotNull;
 		this.url = url;
 	}
 
-	@JsonValue public String getUrl() {
+	@JsonValue
+	public String getUrl() {
 		return url;
 	}
 

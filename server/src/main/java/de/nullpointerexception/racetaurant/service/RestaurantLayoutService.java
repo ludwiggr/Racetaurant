@@ -1,24 +1,28 @@
 package de.nullpointerexception.racetaurant.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import de.nullpointerexception.racetaurant.controller.errors.RestaurantNotFoundException;
 import de.nullpointerexception.racetaurant.model.Floor;
 import de.nullpointerexception.racetaurant.model.LayoutObjectType;
 import de.nullpointerexception.racetaurant.model.RestaurantLayout;
 import de.nullpointerexception.racetaurant.model.StaticLayoutObject;
 import de.nullpointerexception.racetaurant.repository.RestaurantLayoutRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-@Service public class RestaurantLayoutService {
+@Service
+public class RestaurantLayoutService {
 	private final RestaurantLayoutRepository restaurantLayoutRepository;
 
-	@PersistenceContext public EntityManager em;
+	@PersistenceContext
+	public EntityManager em;
 
 	public RestaurantLayoutService(RestaurantLayoutRepository restaurantLayoutRepository) {
 		this.restaurantLayoutRepository = restaurantLayoutRepository;

@@ -4,12 +4,19 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-@Entity @DiscriminatorValue("text") public class LayoutText extends StaticLayoutObject {
-	@NotNull private String text;
-	@NotNull private double x;
-	@NotNull private double y;
-	@NotNull private int fontSize;
-	@NotNull private LayoutColor color;
+@Entity
+@DiscriminatorValue("text")
+public class LayoutText extends StaticLayoutObject {
+	@NotNull
+	private String text;
+	@NotNull
+	private double x;
+	@NotNull
+	private double y;
+	@NotNull
+	private int fontSize;
+	@NotNull
+	private LayoutColor color;
 
 	public LayoutText(String text, double x, double y, int fontSize, LayoutColor color) {
 		super(LayoutObjectType.TEXT);

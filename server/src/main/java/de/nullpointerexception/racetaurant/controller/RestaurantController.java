@@ -1,29 +1,36 @@
 package de.nullpointerexception.racetaurant.controller;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
 import de.nullpointerexception.racetaurant.model.Cuisine;
 import de.nullpointerexception.racetaurant.model.Order;
 import de.nullpointerexception.racetaurant.model.PriceCategory;
 import de.nullpointerexception.racetaurant.model.Restaurant;
 import de.nullpointerexception.racetaurant.service.RestaurantService;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
-@RestController @RequestMapping("/api/restaurants") @Validated @CrossOrigin public class RestaurantController {
+@RestController
+@RequestMapping("/api/restaurants")
+@Validated
+@CrossOrigin
+public class RestaurantController {
 	private final RestaurantService service;
 
 	RestaurantController(RestaurantService service) {
 		this.service = service;
 	}
 
-	@GetMapping List<Restaurant> filtered(
-			// @formatter:off
+	@GetMapping
+	List<Restaurant> filtered(
+	// @formatter:off
 			@Min(value = 0, message = "start has to be greater or equal to 0.") @RequestParam(name = "start", required = false) Integer start,
 			@Min(value = 0, message = "The minimum limit is 0.") @Max(value = 200, message = "The maximum limit is 200.") @RequestParam(name = "limit", required = false) Integer limit,
 			@RequestParam(name = "price", required = false) PriceCategory priceCategory,
@@ -44,7 +51,8 @@ import java.util.UUID;
 				ratingMin, ratingMax, timeStart, timeStop, persons, order, ascending);
 	}
 
-	@GetMapping("/{id}") Restaurant one(@PathVariable UUID id) {
+	@GetMapping("/{id}")
+	Restaurant one(@PathVariable UUID id) {
 		return service.getRestaurantById(id).orElseThrow(() -> new RestaurantNotFoundException(id.toString()));
 	}
 }

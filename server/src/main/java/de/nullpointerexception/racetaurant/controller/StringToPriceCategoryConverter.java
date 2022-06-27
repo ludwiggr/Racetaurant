@@ -1,12 +1,14 @@
 package de.nullpointerexception.racetaurant.controller;
 
-import de.nullpointerexception.racetaurant.model.PriceCategory;
-import org.springframework.core.convert.converter.Converter;
-
 import java.util.Objects;
 
+import org.springframework.core.convert.converter.Converter;
+
+import de.nullpointerexception.racetaurant.model.PriceCategory;
+
 public class StringToPriceCategoryConverter implements Converter<String, PriceCategory> {
-	@Override public PriceCategory convert(String id) {
+	@Override
+	public PriceCategory convert(String id) {
 		Integer idAsInteger;
 		try {
 			idAsInteger = Integer.parseInt(id);

@@ -1,19 +1,29 @@
 package de.nullpointerexception.racetaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
-@Entity public class Floor {
-	@Id @GeneratedValue @JsonIgnore private Long id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+public class Floor {
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long id;
 
 	private String name;
 
-	@OneToOne(cascade = CascadeType.ALL) @NotNull private Shape bounds;
+	@OneToOne(cascade = CascadeType.ALL)
+	@NotNull
+	private Shape bounds;
 
-	@NotNull @OneToMany(cascade = CascadeType.ALL) @NotNull private List<StaticLayoutObject> objects;
+	@NotNull
+	@OneToMany(cascade = CascadeType.ALL)
+	@NotNull
+	private List<StaticLayoutObject> objects;
 
 	public Floor(String name, Shape bounds, List<StaticLayoutObject> objects) {
 		this.name = name;

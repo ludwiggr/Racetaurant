@@ -1,14 +1,20 @@
 package de.nullpointerexception.racetaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity @Inheritance(strategy = InheritanceType.JOINED) public abstract class Shape {
-	@Id @GeneratedValue @JsonIgnore private Long id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	@NotNull private ShapeType type;
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Shape {
+	@Id
+	@GeneratedValue
+	@JsonIgnore
+	private Long id;
+
+	@NotNull
+	private ShapeType type;
 
 	public Shape(ShapeType type) {
 		this.type = type;
@@ -26,5 +32,6 @@ import javax.validation.constraints.NotNull;
 		return type;
 	}
 
-	@Override public abstract Shape clone();
+	@Override
+	public abstract Shape clone();
 }

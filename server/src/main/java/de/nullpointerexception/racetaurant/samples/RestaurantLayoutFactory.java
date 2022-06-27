@@ -1,9 +1,10 @@
 package de.nullpointerexception.racetaurant.samples;
 
-import de.nullpointerexception.racetaurant.model.*;
+import java.util.*;
+
 import org.springframework.data.util.Pair;
 
-import java.util.*;
+import de.nullpointerexception.racetaurant.model.*;
 
 public class RestaurantLayoutFactory {
 	private static final Random RANDOM = new Random(231);
@@ -11,15 +12,17 @@ public class RestaurantLayoutFactory {
 	private static final int MAX_FLOOR_COUNT = 12;
 	private static final String[] floorNames = { "Entry Hall", "Roof", "Main Floor", "Ground Floor", "Party Rooms",
 			"Private Rooms", "Lobby", "Cafee", "Bar Lounge", "Christmas Floor", "Dance Floor", "Bar Floor" };
-	private static final Shape[] floorShapes = { new Rectangle(0, 0, 100, 120, 0), new Rectangle(0, 0, 100, 100, 45),
-			new Polygon(List.of(new Point2D(0, 0), new Point2D(100, 0), new Point2D(125, 50), new Point2D(100, 100),
-					new Point2D(0, 100)), false), new Circle(150, 75, 75) };
+	private static final Shape[] floorShapes = {
+			new Rectangle(0, 0, 100, 120, 0), new Rectangle(0, 0, 100, 100, 45), new Polygon(List.of(new Point2D(0, 0),
+					new Point2D(100, 0), new Point2D(125, 50), new Point2D(100, 100), new Point2D(0, 100)), false),
+			new Circle(150, 75, 75) };
 	private static final String[] simpleLayoutImageURLs = {
-			"https://images.unsplash.com/photo-1489710437720-ebb67ec84dd2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8aGFwcHl8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60" + "https://images.unsplash.com/photo-1656183566876-18dcdb90db8d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOXx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=60",
+			"https://images.unsplash.com/photo-1489710437720-ebb67ec84dd2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8aGFwcHl8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60"
+					+ "https://images.unsplash.com/photo-1656183566876-18dcdb90db8d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOXx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=60",
 			"https://images.unsplash.com/photo-1573865526739-10659fec78a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y2F0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60" };
-	private static final Pair<String, String>[] layoutImageURLs = new Pair[] {
-			Pair.of("https://images.unsplash.com/photo-1590698933947-a202b069a861?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aGFwcHl8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60",
-					"https://images.unsplash.com/photo-1607688387751-c1e95ae09a42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2FkfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60") };
+	private static final Pair<String, String>[] layoutImageURLs = new Pair[] { Pair.of(
+			"https://images.unsplash.com/photo-1590698933947-a202b069a861?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aGFwcHl8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60",
+			"https://images.unsplash.com/photo-1607688387751-c1e95ae09a42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2FkfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60") };
 	private static final String[] layoutTexts = { "Nice Spot", "Deadly Zone", "Corona Test Center" };
 
 	public static RestaurantLayout create(Restaurant restaurant) {

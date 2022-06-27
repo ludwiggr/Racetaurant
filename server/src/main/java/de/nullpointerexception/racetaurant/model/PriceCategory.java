@@ -11,7 +11,8 @@ public enum PriceCategory {
 		this.id = id;
 	}
 
-	@JsonValue public Integer getId() {
+	@JsonValue
+	public Integer getId() {
 		return id;
 	}
 

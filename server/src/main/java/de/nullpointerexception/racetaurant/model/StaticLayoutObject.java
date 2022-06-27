@@ -1,15 +1,23 @@
 package de.nullpointerexception.racetaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.UUID;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
-@Entity @Inheritance(strategy = InheritanceType.JOINED) @DiscriminatorColumn(name = "objectType") public abstract class StaticLayoutObject {
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "id", insertable = false, updatable = false, nullable = false) private UUID id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-	@NotNull private LayoutObjectType type;
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "objectType")
+public abstract class StaticLayoutObject {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", insertable = false, updatable = false, nullable = false)
+	private UUID id;
+
+	@NotNull
+	private LayoutObjectType type;
 
 	public StaticLayoutObject(LayoutObjectType type) {
 		this.type = type;
@@ -19,7 +27,8 @@ import java.util.UUID;
 
 	}
 
-	@JsonIgnore public UUID getId() {
+	@JsonIgnore
+	public UUID getId() {
 		return id;
 	}
 

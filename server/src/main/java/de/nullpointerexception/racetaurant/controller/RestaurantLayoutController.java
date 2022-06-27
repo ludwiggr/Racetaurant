@@ -1,21 +1,27 @@
 package de.nullpointerexception.racetaurant.controller;
 
-import de.nullpointerexception.racetaurant.model.LayoutObjectType;
-import de.nullpointerexception.racetaurant.model.RestaurantLayout;
-import de.nullpointerexception.racetaurant.service.RestaurantLayoutService;
+import java.util.UUID;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import de.nullpointerexception.racetaurant.model.LayoutObjectType;
+import de.nullpointerexception.racetaurant.model.RestaurantLayout;
+import de.nullpointerexception.racetaurant.service.RestaurantLayoutService;
 
-@RestController @RequestMapping("/api/restaurants") @Validated @CrossOrigin public class RestaurantLayoutController {
+@RestController
+@RequestMapping("/api/restaurants")
+@Validated
+@CrossOrigin
+public class RestaurantLayoutController {
 	private final RestaurantLayoutService service;
 
 	RestaurantLayoutController(RestaurantLayoutService service) {
 		this.service = service;
 	}
 
-	@GetMapping("/{id}/layout") public RestaurantLayout getRestaurantLayout(@PathVariable UUID id,
+	@GetMapping("/{id}/layout")
+	public RestaurantLayout getRestaurantLayout(@PathVariable UUID id,
 			@RequestParam(name = "object-types") LayoutObjectType[] objectTypes) {
 		return service.getRestaurantLayoutWithFilter(id, objectTypes);
 	}

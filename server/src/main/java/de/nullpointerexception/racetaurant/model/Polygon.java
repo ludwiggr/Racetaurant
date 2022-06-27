@@ -1,13 +1,18 @@
 package de.nullpointerexception.racetaurant.model;
 
+import java.util.List;
+
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
-@Entity public class Polygon extends Shape {
-	@ElementCollection @NotNull private List<Point2D> points;
-	@NotNull private boolean open;
+@Entity
+public class Polygon extends Shape {
+	@ElementCollection
+	@NotNull
+	private List<Point2D> points;
+	@NotNull
+	private boolean open;
 
 	public Polygon(List<Point2D> points, boolean open) {
 		super(ShapeType.polygon);
@@ -35,8 +40,8 @@ import java.util.List;
 		this.open = open;
 	}
 
-	@Override public Polygon clone() {
+	@Override
+	public Polygon clone() {
 		return new Polygon(List.copyOf(this.points), open);
 	}
 }
-

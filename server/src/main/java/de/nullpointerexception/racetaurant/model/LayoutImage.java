@@ -1,16 +1,24 @@
 package de.nullpointerexception.racetaurant.model;
 
-import org.hibernate.validator.constraints.URL;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-@Entity @DiscriminatorValue("image") public class LayoutImage extends ShapedLayoutObject {
-	@URL @Column(length = 400) @NotNull private String light;
+import org.hibernate.validator.constraints.URL;
 
-	@URL @Column(length = 400) @NotNull private String dark;
+@Entity
+@DiscriminatorValue("image")
+public class LayoutImage extends ShapedLayoutObject {
+	@URL
+	@Column(length = 400)
+	@NotNull
+	private String light;
+
+	@URL
+	@Column(length = 400)
+	@NotNull
+	private String dark;
 
 	public LayoutImage(Shape shape, String light, String dark) {
 		super(shape, LayoutObjectType.IMAGE);
