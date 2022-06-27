@@ -6,12 +6,12 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @DiscriminatorValue("staircase")
-public class Staircase extends StaticLayoutObject {
+public class Staircase extends ShapedLayoutObject {
 	@NotNull
 	private int targetLevel;
 
-	public Staircase(int targetLevel) {
-		super(LayoutObjectType.STAIRCASE);
+	public Staircase(Shape shape, int targetLevel) {
+		super(shape, LayoutObjectType.STAIRCASE);
 		this.targetLevel = targetLevel;
 	}
 

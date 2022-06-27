@@ -73,7 +73,7 @@ public class RestaurantLayoutFactory {
 			}
 			case TEXT -> new LayoutText(layoutTexts[RANDOM.nextInt(layoutImageURLs.length)], RANDOM.nextDouble(0, 100),
 					RANDOM.nextDouble(0, 100), RANDOM.nextInt(5, 20), randomColor());
-			case STAIRCASE -> new Staircase(RANDOM.nextInt(staircaseBound));
+			case STAIRCASE -> new Staircase(randomShape(), RANDOM.nextInt(staircaseBound));
 			default -> new ColoredShape(randomColor(), randomShape());
 		};
 	}
