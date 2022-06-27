@@ -22,7 +22,7 @@ public class RestaurantLayoutController {
 
 	@GetMapping("/{id}/layout")
 	public RestaurantLayout getRestaurantLayout(@PathVariable UUID id,
-			@RequestParam(name = "object-types") LayoutObjectType[] objectTypes) {
+			@RequestParam(name = "object-types", required = false) LayoutObjectType[] objectTypes) {
 		return service.getRestaurantLayoutWithFilter(id, objectTypes);
 	}
 }
