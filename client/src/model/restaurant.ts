@@ -2,7 +2,6 @@ import Cuisine, { isCuisine } from "./cuisine";
 import Location, { isLocation } from "./location";
 import OpeningTimes, { isOpeningTimes } from "./openingTimes";
 import PriceCategory, { isPriceCategory } from "./priceCategory";
-import RestaurantLayout, { isRestaurantLayout } from "./restaurantLayout";
 
 /**
  * A Restaurant with the affiliated information
@@ -16,7 +15,6 @@ class Restaurant {
     priceCategory: PriceCategory;
     cuisines: Array<Cuisine>;
     location: Location;
-    layout: RestaurantLayout;
     open: OpeningTimes;
 
 
@@ -29,7 +27,6 @@ class Restaurant {
         priceCategory: PriceCategory,
         cuisines: Array<Cuisine>,
         location: Location,
-        layout: RestaurantLayout,
         open: OpeningTimes
     ) {
         this.id = id
@@ -40,7 +37,6 @@ class Restaurant {
         this.priceCategory = priceCategory
         this.cuisines = cuisines
         this.location = location
-        this.layout = layout
         this.open = open
     }
 
@@ -63,7 +59,6 @@ export const isRestaurant = (restaurant: any): restaurant is Restaurant => {
         (isPriceCategory(restaurant.priceCategory)) && //
         (Array.isArray(restaurant.cuisines)) && ((restaurant.cuisines as Array<any>).every(isCuisine)) && //
         (isLocation(restaurant.location)) && //
-        (isRestaurantLayout(restaurant.layout)) && //
         (isOpeningTimes(restaurant.open));
 };
 
