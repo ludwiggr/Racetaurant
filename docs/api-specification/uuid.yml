@@ -1,0 +1,8 @@
+UUID:
+  type: string
+  pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+  # the regex above limits the length;
+  # however, some tools might require explicit settings:
+  minLength: 36
+  maxLength: 36
+  example: "44c8a84e-ebe5-11ec-8ea0-0242ac120002"

@@ -1,11 +1,23 @@
 @startuml
 
-class "Cuisine" {
-  id : Long
-  cuisineType : CuisineType
+class "Circle" {
+  x : double
+  y : double
+  radius : double
+  clone() : Circle
+  clone() : Object
+  clone() : Shape
 }
 
-enum "CuisineType" {
+class "ColoredShape" {
+  color : LayoutColor
+}
+
+class "Converters" {
+  addFormatters(FormatterRegistry)
+}
+
+enum "Cuisine" {
   BALKAN
   ASIAN
   ITALIAN
@@ -14,44 +26,128 @@ enum "CuisineType" {
   TURKISH
   GREEK
   AMERICAN
-  id
-  parse(String) : CuisineType
 }
 
-class "InvalidQueryParameterException"
+class "Floor" {
+  id : Long
+  name : String
+  bounds : Shape
+  objects : List<StaticLayoutObject>
+}
+
+class "GlobalExceptionHandler" {
+  handle(ConstraintViolationException) : Map
+  handle(MethodArgumentTypeMismatchException) : Map
+  handle(MethodArgumentNotValidException) : Map
+}
+
+enum "LayoutColor" {
+  foreground
+  background
+  red
+  orange
+  yellow
+  lime
+  green
+  turquoise
+  cyan
+  blue
+  purple
+  magenta
+}
+
+class "LayoutImage" {
+  light : String
+  dark : String
+}
+
+enum "LayoutObjectType" {
+  STAIRCASE
+  TABLE
+  COLORED_SHAPE
+  TEXT
+  BAR
+  TOILETS
+  ENTRANCE
+  DOOR
+  IMAGE
+  id
+}
+
+class "LayoutText" {
+  text : String
+  x : double
+  y : double
+  fontSize : int
+  color : LayoutColor
+  setX(float)
+  setY(float)
+}
 
 class "Location" {
-  id : Long
   latitude : double
   longitude : double
   address : String
 }
 
+class "OpeningTime" {
+  from : String
+  to : String
+}
+
 class "OpeningTimes" {
-  id : Long
-  mondayFrom : String
-  mondayTo : String
-  tuesdayFrom : String
-  tuesDayTo : String
-  wednesdayFrom : String
-  wednesdayTo : String
-  thursdayFrom : String
-  thursdayTo : String
-  fridayFrom : String
-  fridayTo : String
-  saturdayFrom : String
-  saturdayTo : String
+  monday : OpeningTime
+  tuesday : OpeningTime
+  wednesday : OpeningTime
+  thursday : OpeningTime
+  friday : OpeningTime
+  saturday : OpeningTime
+  sunday : OpeningTime
+}
+
+enum "Order" {
+  ID
+  NAME
+  RATING
+  PRICE
+  columnName
+}
+
+class "Point2D" {
+  x : double
+  y : double
+}
+
+class "Polygon" {
+  points : List<Point2D>
+  open : boolean
+  clone() : Polygon
+  clone() : Object
+  clone() : Shape
 }
 
 enum "PriceCategory" {
   CHEAP
   MEDIUM
   EXPENSIVE
-  value
+  id
 }
 
 class "RacetaurantApplication" {
   restaurantRepository : RestaurantRepository
+  restaurantLayoutRepository : RestaurantLayoutRepository
+  insertRestaurantLayouts() : CommandLineRunner
+}
+
+class "Rectangle" {
+  x : double
+  y : double
+  width : double
+  height : double
+  rotation : double
+  clone() : Rectangle
+  clone() : Object
+  clone() : Shape
 }
 
 class "Restaurant" {
@@ -59,12 +155,11 @@ class "Restaurant" {
   name : String
   website : String
   rating : double
-  restaurantImages : List<RestaurantImage>
+  images : List<RestaurantImage>
   priceCategory : PriceCategory
   cuisines : List<Cuisine>
   location : Location
-  layout : RestaurantLayout
-  times : OpeningTimes
+  open : OpeningTimes
 }
 
 class "RestaurantController" {
@@ -74,11 +169,30 @@ class "RestaurantController" {
 class "RestaurantImage" {
   id : Long
   url : String
-  restaurant : Restaurant
 }
 
 class "RestaurantLayout" {
-  id : Long
+  id : UUID
+  floors : List<Floor>
+  restaurant : Restaurant
+  defaultFloor : int
+}
+
+class "RestaurantLayoutController" {
+  service : RestaurantLayoutService
+  getRestaurantLayout(UUID, LayoutObjectType[]) : RestaurantLayout
+}
+
+class "RestaurantLayoutFactory"
+
+interface "RestaurantLayoutRepository" {
+  findByRestaurantId(UUID) : RestaurantLayout
+}
+
+class "RestaurantLayoutService" {
+  restaurantLayoutRepository : RestaurantLayoutRepository
+  em : EntityManager
+  getRestaurantLayoutWithFilter(UUID, LayoutObjectType[]) : RestaurantLayout
 }
 
 class "RestaurantNotFoundException"
@@ -89,20 +203,104 @@ class "RestaurantService" {
   restaurantRepository : RestaurantRepository
   em : EntityManager
   getRestaurantById(UUID) : Optional<Restaurant>
-  getRestaurantsWithFilter(Integer, Integer, PriceCategory, Double, Double, Double, CuisineType[], Double, Double, String, String, Integer, String, Boolean) : List<Restaurant>
+  getRestaurantsWithFilter(Integer, Integer, PriceCategory, Double, Double, Double, Cuisine[], Double, Double, LocalDateTime, LocalDateTime, Integer, Order, Boolean) : List<Restaurant>
 }
 
-"Cuisine" --> "CuisineType" : cuisineType
+class "RestaurantTable" {
+  places : int
+}
+
+abstract class "Shape" {
+  id : Long
+  type : ShapeType
+  clone() : Object
+  clone() : Shape
+}
+
+enum "ShapeType" {
+  rectangle
+  circle
+  polygon
+}
+
+class "ShapedLayoutObject" {
+  shape : Shape
+}
+
+class "SimpleLayoutImage" {
+  url : String
+}
+
+class "Staircase" {
+  targetLevel : int
+}
+
+abstract class "StaticLayoutObject" {
+  id : UUID
+  type : LayoutObjectType
+}
+
+class "StringToCuisineConverter" {
+  convert(String) : Cuisine
+  convert(Object) : Object
+}
+
+class "StringToLayoutObjectTypeConverter" {
+  convert(String) : LayoutObjectType
+  convert(Object) : Object
+}
+
+class "StringToOrderConverter" {
+  convert(String) : Order
+  convert(Object) : Object
+}
+
+class "StringToPriceCategoryConverter" {
+  convert(String) : PriceCategory
+  convert(Object) : Object
+}
+
+"ColoredShape" --> "LayoutColor" : color
+"Floor" --> "Shape" : bounds
+"Floor" --> "*" "StaticLayoutObject" : objects
+"LayoutText" --> "LayoutColor" : color
+"OpeningTimes" --> "OpeningTime" : monday/tuesday/wednesday/thursday/friday/saturday/sunday
+"Polygon" --> "*" "Point2D" : points
+"RacetaurantApplication" --> "RestaurantLayoutRepository" : restaurantLayoutRepository
 "RacetaurantApplication" --> "RestaurantRepository" : restaurantRepository
 "RestaurantController" --> "RestaurantService" : service
 "Restaurant" --> "*" "Cuisine" : cuisines
+"RestaurantLayoutController" --> "RestaurantLayout" : use
+"RestaurantLayoutController" --> "RestaurantLayoutService" : service
+"RestaurantLayout" --> "*" "Floor" : floors
+"RestaurantLayoutRepository" --> "RestaurantLayout" : use
+"RestaurantLayout" --> "Restaurant" : restaurant
+"RestaurantLayoutService" --> "RestaurantLayout" : use
+"RestaurantLayoutService" --> "RestaurantLayoutRepository" : restaurantLayoutRepository
 "Restaurant" --> "Location" : location
-"Restaurant" --> "OpeningTimes" : times
+"Restaurant" --> "OpeningTimes" : open
 "Restaurant" --> "PriceCategory" : priceCategory
-"Restaurant" <-> "*" "RestaurantImage" : restaurantImages/restaurant
-"Restaurant" --> "RestaurantLayout" : layout
+"Restaurant" --> "*" "RestaurantImage" : images
+"RestaurantService" --> "Order" : use as order
 "RestaurantService" --> "PriceCategory" : use as priceCategory
 "RestaurantService" --> "Restaurant" : use
 "RestaurantService" --> "RestaurantRepository" : restaurantRepository
+"Shape" <-> "Circle"
+"Shape" <-> "Polygon"
+"Shape" <-> "Rectangle"
+"Shape" --> "ShapeType" : type
+"ShapedLayoutObject" <|-- "ColoredShape"
+"ShapedLayoutObject" <|-- "LayoutImage"
+"ShapedLayoutObject" <|-- "RestaurantTable"
+"ShapedLayoutObject" --> "Shape" : shape
+"ShapedLayoutObject" <|-- "SimpleLayoutImage"
+"StaticLayoutObject" --> "LayoutObjectType" : type
+"StaticLayoutObject" <|-- "LayoutText"
+"StaticLayoutObject" <|-- "ShapedLayoutObject"
+"StaticLayoutObject" <|-- "Staircase"
+"StringToCuisineConverter" --> "Cuisine" : use
+"StringToLayoutObjectTypeConverter" --> "LayoutObjectType" : use
+"StringToOrderConverter" --> "Order" : use
+"StringToPriceCategoryConverter" --> "PriceCategory" : use
 
 @enduml

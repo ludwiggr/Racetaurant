@@ -1,0 +1,124 @@
+Restaurant:
+  type: object
+  properties:
+    id:
+      type: string
+      description: The restaurant ID
+      example: 39db44be-f397-4972-9871-818d62410c0f
+    name:
+      type: string
+      description: The restaurants name
+      example: La Bella Italia
+    website:
+      type: string
+      description: A URL to the restaurants website
+      example: "https://la-bella-italia.de/home"
+    rating:
+      type: number
+      description: The restaurants rating
+      minimum: 0
+      maximum: 5
+      example: 4.35
+    images:
+      type: array
+      description: URLs to the restaurants images
+      items:
+        type: string
+        example: "/images/EU40Q1WOAT.png"
+    priceCategory:
+      $ref: "#/priceCategory"
+    cuisines:
+      type: array
+      description: A list of cuisines the restaurants offers
+      items:
+        $ref: "#/cuisineType"
+      example: [italian, german]
+    location:
+      type: object
+      description: The location of the restaurant
+      properties:
+        latitude:
+          type: number
+          description: latitudeitude of the location
+          example: 28.52473
+        longitude:
+          type: number
+          description: longitudeitude of the location
+          example: 45.28437
+        address:
+          type: string
+          description: The street name and number of the restaurant
+          example: Rumfordstraße 34
+    open:
+      $ref: "#/openingTimes"
+priceCategory:
+  type: integer
+  description: The price category
+  minimum: 0
+  maximum: 2
+  example: 0
+cuisineType:
+  type: string
+  enum:
+    - balkan
+    - asian
+    - italian
+    - german
+    - indian
+    - turkish
+    - greek
+    - american
+  example: italian
+Review:
+  type: object
+  properties:
+    title:
+      type: string
+      example: Liked the food
+    content:
+      type: string
+      example: The food was good and the waiter was nice
+    author:
+      type: string
+      example: Bob Rater
+    rating:
+      type: integer
+      minimum: 0
+      maximum: 5
+      example: 5
+openingTimes:
+  type: object
+  description: The times the restaurant is open
+  properties:
+    monday:
+      $ref: "#/openingTime"
+    tuesday:
+      $ref: "#/openingTime"
+    wednesday:
+      $ref: "#/openingTime"
+    thursday:
+      $ref: "#/openingTime"
+    friday:
+      $ref: "#/openingTime"
+    saturday:
+      $ref: "#/openingTime"
+    sunday:
+      $ref: "#/openingTime"
+openingTime:
+  oneOf:
+    - type: object
+      description: The time the restaurant is open in its local time
+      properties:
+        from:
+          description: The time the restaurant opens in its local time
+          allOf:
+            - $ref: "./time.yml#/Time24h"
+        to:
+          description: The time the restaurant closes in its local time
+          allOf:
+            - $ref: "./time.yml#/Time24h"
+    - type: string
+      description: The restaurant is closed that day
+      example: closed
+      enum:
+        - closed
