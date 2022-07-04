@@ -1,0 +1,76 @@
+Point2D:
+  type: object
+  properties:
+    x:
+      type: number
+      example: 99.67
+      description: The point's x coordinate
+    y:
+      type: number
+      example: 23.1
+      description: The point's y coordinate
+Polygon:
+  type: object
+  properties:
+    type:
+      type: string
+      enum: [polygon]
+    open:
+      description: Whether the polygon is open (true) or closed (false)
+      type: boolean
+      example: false
+    points:
+      type: array
+      description: The points defining the polygon
+      items:
+        $ref: "#/Point2D"
+Circle:
+  type: object
+  properties:
+    type:
+      type: string
+      enum: [circle]
+    radius:
+      description: The circle's radius
+      type: number
+      minimum: 0
+      example: 2.4
+    x:
+      type: number
+      example: 25.2
+      description: The circle's center x coordinate
+    y:
+      type: number
+      example: 100.1
+      description: The circle's center y coordinate
+Rectangle:
+  type: object
+  properties:
+    type:
+      type: string
+      enum: [rectangle]
+    width:
+      type: number
+      description: The rectangle's width in meters
+      example: 10.2
+    height:
+      type: number
+      description: The rectangle's height in meters
+      example: 12.5
+    x:
+      type: number
+      description: The rectangles's x coordinate
+      example: 25.2
+    y:
+      type: number
+      description: The rectangles's y coordinate
+      example: 100.1
+    rotation:
+      type: number
+      description: The rectangles's rotation in radians
+      example: 35.1
+Shape:
+  oneOf:
+    - $ref: "#/Rectangle"
+    - $ref: "#/Circle"
+    - $ref: "#/Polygon"

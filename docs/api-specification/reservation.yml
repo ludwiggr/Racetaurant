@@ -1,0 +1,27 @@
+ReservationRequest:
+  type: object
+  properties:
+    tables:
+      description: The id's of the reserved tables
+      type: array
+      items:
+        $ref: "./uuid.yml#/UUID"
+      minItems: 1
+    time_start:
+      description: The ISO 8601 timestamp when the reservations starts
+      $ref: "./time.yml#/ISO8601"
+    time_stop:
+      description: The ISO 8601 timestamp when the reservations ends
+      $ref: "./time.yml#/ISO8601"
+RestaurantTableReservations:
+  type: object
+  description: "Maps a table uuid (key) to an array holding it's reservations"
+  additionalProperties:
+    type: array
+    items:
+      type: object
+      properties:
+        from:
+          $ref: "./time.yml#/ISO8601"
+        to:
+          $ref: "./time.yml#/ISO8601"

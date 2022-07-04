@@ -1,0 +1,11 @@
+Reservation {
+    id: UUID
+    from: string
+    to: string
+    user: string
+}
+
+TableReservation {
+    table: Table
+    reservation: Reservation
+}

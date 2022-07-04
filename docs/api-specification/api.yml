@@ -1,0 +1,240 @@
+openapi: "3.0.3"
+info:
+  title: Racetaurant API
+  version: "1.0"
+servers:
+  - url: http://127.0.0.1:8080/api/
+paths:
+  /restaurants:
+    parameters:
+      - in: query
+        name: start
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 150
+        description: The first restaurant to return
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 200
+          default: 50
+        description: The number of restaurants to return
+      - in: query
+        name: price
+        schema:
+          $ref: "./restaurant.yml#/priceCategory"
+      - in: query
+        name: latitude
+        schema:
+          type: number
+          minimum: -90
+          maximum: 90
+      - in: query
+        name: longitude
+        schema:
+          type: number
+          minimum: -90
+          maximum: 90
+      - in: query
+        name: radius
+        description: Radius around latitude and longitude in km
+        schema:
+          type: number
+          minimum: 0
+      - in: query
+        name: cuisines
+        schema:
+          type: array
+          items:
+            $ref: "./restaurant.yml#/cuisineType"
+      - in: query
+        name: rating_min
+        schema:
+          type: number
+          default: 0
+          minimum: 0
+          maximum: 5
+      - in: query
+        name: rating_max
+        schema:
+          type: number
+          default: 5
+          minimum: 0
+          maximum: 5
+      - in: query
+        name: time_start
+        description: The ISO 8601 timestamp when a free table should be available
+        schema:
+          $ref: "./time.yml#/ISO8601"
+      - in: query
+        name: time_stop
+        description: The ISO 8601 timestamp until a free table should be available
+        schema:
+          $ref: "./time.yml#/ISO8601"
+      - in: query
+        name: persons
+        description: The number of persons that should have space at a table
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - in: query
+        name: order
+        description: The order the results should be in
+        schema:
+          type: array
+          default: [id]
+          items:
+            enum:
+              - id
+              - name
+              - rating
+              - price
+      - in: query
+        name: asc
+        description: Whether the order should be ascending
+        schema:
+          type: boolean
+          default: false
+    get:
+      description: Get detailed information about each restaurant matching the filters
+      responses:
+        "200":
+          description: A list of restaurants matching the filters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "./restaurant.yml#/Restaurant"
+  /restaurants/{restaurantId}:
+    parameters:
+      - in: path
+        name: restaurantId
+        schema:
+          $ref: "./uuid.yml#/UUID"
+        required: true
+        description: ID of the restaurant to get
+    get:
+      description: Get detailed information about a single restaurant
+      responses:
+        "200":
+          description: The requested restaurant
+          content:
+            application/json:
+              schema:
+                $ref: "./restaurant.yml#/Restaurant"
+        "404":
+          description: The requested restaurant does not exist
+  /restaurants/{restaurantId}/reviews:
+    parameters:
+      - in: path
+        name: restaurantId
+        schema:
+          $ref: "./uuid.yml#/UUID"
+        required: true
+        description: The restaurant's id
+      - in: query
+        name: start
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          example: 150
+        description: The first comment to return
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 0
+          maximum: 200
+          default: 50
+        description: The number of comments to return
+    get:
+      description: Get a restaurant's reviews
+      responses:
+        "200":
+          description: The requested comments ordered by time
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "./restaurant.yml#/Review"
+        "404":
+          description: The requested restaurant does not exist
+  /restaurants/{restaurantId}/layout:
+    parameters:
+      - in: path
+        name: restaurantId
+        schema:
+          $ref: "./uuid.yml#/UUID"
+        required: true
+        description: The id of the requested layout's restaurant
+      - in: query
+        name: object-types
+        required: false
+        description: "The object types to be returned for each floor (default: all)"
+        schema:
+          type: array
+          items:
+            $ref: "./restaurant-layout.yml#/RestaurantObjectType"
+    get:
+      description: Get a restaurant's layout (tables, toilets, ...) divided by floors
+      responses:
+        "200":
+          description: The layout of the requested restaurant divided by floors
+          content:
+            application/json:
+              schema:
+                $ref: "./restaurant-layout.yml#/RestaurantLayout"
+        "404":
+          description: The requested restaurant does not exist
+  /restaurants/{restaurantId}/reservations:
+    parameters:
+      - in: path
+        name: restaurantId
+        schema:
+          $ref: "./uuid.yml#/UUID"
+        required: true
+        description: The restaurant's id
+    post:
+      description: Reserve one or more tables (of a restaurant) for a specified amount of time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./reservation.yml#/ReservationRequest"
+      responses:
+        "201":
+          description: The reservation was successfull
+        "404":
+          description: The requested restaurant does not exist
+        "422":
+          description: The reservation failed
+    get:
+      description: "Get a restaurant's table reservations (inside the specified interval)"
+      parameters:
+        - in: query
+          name: time_start
+          description: The begin of the time interval (ISO 8601)
+          schema:
+            $ref: "./time.yml#/ISO8601"
+        - in: query
+          name: time_stop
+          description: The end of the time interval (ISO 8601)
+          schema:
+            $ref: "./time.yml#/ISO8601"
+      responses:
+        "200":
+          description: The restaurant reservations (inside the specified interval) divided by tables
+          content:
+            application/json:
+              schema:
+                $ref: "./reservation.yml#/RestaurantTableReservations"
+        "404":
+          description: The requested restaurant does not exist

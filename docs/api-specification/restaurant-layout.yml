@@ -1,0 +1,167 @@
+Table:
+  type: object
+  description: Represents a table in a restaurant
+  allOf:
+    - $ref: "#/StaticRestaurantObject"
+  properties:
+    type:
+      type: string
+      enum: [table]
+    id:
+      description: The table's unique UUID
+      $ref: "./uuid.yml#/UUID"
+    places:
+      description: The amount of places the table offers
+      type: number
+      example: 24
+      minimum: 0
+Image:
+  type: object
+  description: Represents an image
+  properties:
+    type:
+      type: string
+      enum: [image]
+  allOf:
+    - $ref: "#/StaticRestaurantObject"
+  oneOf:
+    - type: object
+      properties:
+        url:
+          type: string
+          example: "https://unsplash.com/bar.png"
+          description: The image's url
+    - type: object
+      properties:
+        light:
+          description: The dark mode image url
+          type: string
+          example: "https://unsplash.com/bar-light.png"
+        dark:
+          description: The light mode image url
+          type: string
+          example: "https://unsplash.com/bar-dark.png"
+Staircase:
+  description: Represents a staircase connecting two floor levels
+  type: object
+  allOf:
+    - $ref: "#/StaticRestaurantObject"
+  properties:
+    type:
+      type: string
+      enum: [staircase]
+    targetLevel:
+      description: The staircase's target floor level
+      type: integer
+      minimum: 0
+      example: 2
+Color:
+  type: string
+  enum:
+    [
+      foreground,
+      background,
+      red,
+      orange,
+      yellow,
+      lime,
+      green,
+      turquoise,
+      cyan,
+      blue,
+      purple,
+      magenta,
+    ]
+ColoredShape:
+  description: Represents a colored shape
+  type: object
+  properties:
+    type:
+      type: string
+      enum: [colored-shape]
+    color:
+      $ref: "#/Color"
+  allOf:
+    - $ref: "#/StaticRestaurantObject"
+Text:
+  description: Represents a text
+  type: object
+  properties:
+    type:
+      type: string
+      enum: [text]
+    text:
+      description: The text itself
+      type: string
+      example: "TV"
+    x:
+      description: The text's x coordinate
+      type: number
+      example: 34.1
+    y:
+      description: The text's y coordinate
+      type: number
+      example: 12.2
+    fontSize:
+      description: The text's font size
+      type: integer
+      minimum: 0
+      example: 20
+    color:
+      description: The text's color
+      $ref: "#/Color"
+RestaurantObjectType:
+  type: string
+  allOf:
+    - $ref: "#/DynamicRestaurantObjectType"
+    - $ref: "#/StaticRestaurantObjectType"
+StaticRestaurantObjectType:
+  type: string
+  enum: [bar, toilets, entrance, door]
+DynamicRestaurantObjectType:
+  type: string
+  enum: [staircase, table, colored-shape, text, image]
+StaticRestaurantObject:
+  description: Represents a common object consisting of a shape and a type
+  type: object
+  properties:
+    type:
+      $ref: "#/StaticRestaurantObjectType"
+    shape:
+      $ref: "./shapes.yml#/Shape"
+RestaurantObject:
+  type: object
+  oneOf:
+    - $ref: "#/StaticRestaurantObject"
+    - $ref: "#/Staircase"
+    - $ref: "#/Table"
+    - $ref: "#/Text"
+    - $ref: "#/ColoredShape"
+    - $ref: "#/Image"
+RestaurantLayout:
+  description: The restaurant's layout including tables, toilets, doors, etc structured in floors
+  type: object
+  properties:
+    defaultFloor:
+      description: The default floor to show on reserving a table
+      type: integer
+      minimum: 0
+    floors:
+      description: Ordered array of floors
+      type: array
+      items:
+        description: Represents a single floor in the restaurant
+        type: object
+        properties:
+          name:
+            description: The floor's name
+            type: string
+            example: "Ground Floor"
+          bounds:
+            description: The floor's bounds. All objects are inside the floor's bounds.
+            $ref: "./shapes.yml#/Shape"
+          objects:
+            description: The floor's objects (tables, doors, toilets, etc)
+            type: array
+            items:
+              $ref: "#/RestaurantObject"
